@@ -1,12 +1,4 @@
-# Code for Lansing Project Template
-
-This project is intended to be used as a template for creating new Code for
-Lansing projects on GitHub.
-
-Click the "Use this template" button to start a new Code for Lansing project.
-
-Once you've started a new project, please review all of the files that are
-created and change them to fit the requirements of that particular project.
+# Cityzen Server
 
 ## Questions
 

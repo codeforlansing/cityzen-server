@@ -1,0 +1,21 @@
+{
+  "name": "cityzen-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codeforlansing/cityzen-server.git"
+  },
+  "author": "Code for Lansing",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/codeforlansing/cityzen-server/issues"
+  },
+  "homepage": "https://github.com/codeforlansing/cityzen-server#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

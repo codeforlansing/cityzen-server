@@ -4,7 +4,7 @@ Hi! We're really excited that you are interested in contributing to our tech
 community tools. Before submitting your contribution, please make sure to read
 through these guidelines.
 
-- [Code of Conduct](https://github.com/codeforlansing/project-template/blob/master/.github/CODE_OF_CONDUCT.md)
+- [Code of Conduct](https://github.com/codeforlansing/cityzen-server/blob/master/.github/CODE_OF_CONDUCT.md)
 - [Issue Reporting Guidelines](#issue-reporting-guidelines)
 - [Pull Request Guidelines](#pull-request-guidelines)
 - [Development Setup](#development-setup)
@@ -81,11 +81,10 @@ To get the code from GitHub, you will need to install
 to download the project to your computer.
 
 The full `git clone` command will vary depending on the name of the GitHub
-project in which you are working. Replace `project-template` in the following
-command with the correct name of the project you wish to change:
+project in which you are working. FOr the cityzen-server project the full command is as follows:
 
 ``` sh
-git clone https://github.com/codeforlansing/project-template.git
+git clone https://github.com/codeforlansing/cityzen-server.git
 ```
 
 If you forked this repository, the command will be different. Go to the page

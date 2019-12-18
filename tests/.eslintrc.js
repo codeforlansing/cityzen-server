@@ -4,4 +4,12 @@ module.exports = {
     '../.eslintrc.js',
     'plugin:jest/recommended'
   ],
+  rules: {
+    'jest/expect-expect': [
+      'error',
+      {
+        assertFunctionNames: ['supertest']
+      }
+    ]
+  }
 }

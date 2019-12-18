@@ -1,9 +1,8 @@
-
-const request = require('supertest')
+const supertest = require('supertest')
 const app = require('../index')
 
 describe('Test the root path', () => {
   test('It should respond to the GET method', () => {
-    return request(app).get('/').expect(200, 'Hello World!')
+    return supertest(app).get('/').expect(200, 'Hello World!')
   })
 })

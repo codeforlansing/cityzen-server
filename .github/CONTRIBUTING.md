@@ -81,7 +81,7 @@ To get the code from GitHub, you will need to install
 to download the project to your computer.
 
 The full `git clone` command will vary depending on the name of the GitHub
-project in which you are working. For the "cityzen-server" project the full command is as follows:
+project in which you are working. For the `cityzen-server` project the full command is as follows:
 
 ``` sh
 git clone https://github.com/codeforlansing/cityzen-server.git

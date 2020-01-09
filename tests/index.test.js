@@ -25,5 +25,6 @@ describe('Test that the basic routes return dummy data', () => {
       })
       .expect(200)
   })
+
   test.todo('POST /user/report')
 })

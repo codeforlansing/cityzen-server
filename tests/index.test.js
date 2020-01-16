@@ -1,9 +1,11 @@
 const supertest = require('supertest')
-const app = require('../index')
+const app = require('../src/app')
+
+const DEFAULT_TEST_CONFIG = {}
 
 describe('Test that the basic routes return dummy data', () => {
   test('GET /tasks/', async () => {
-    const { body } = await supertest(app)
+    const { body } = await supertest(app(DEFAULT_TEST_CONFIG))
       .get('/tasks/')
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(200)
@@ -17,7 +19,7 @@ describe('Test that the basic routes return dummy data', () => {
   })
 
   test('POST /tasks/volunteer', () => {
-    return supertest(app)
+    return supertest(app(DEFAULT_TEST_CONFIG))
       .post('/tasks/volunteer')
       .send({
         email: 'example@example.com',

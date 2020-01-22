@@ -101,3 +101,6 @@ public
 
 # DynamoDB Local files
 .dynamodb/
+
+# Tern local files
+.tern-port

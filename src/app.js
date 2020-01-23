@@ -1,13 +1,15 @@
 const express = require('express')
 const helmet = require('helmet')
 
-function app (config) {
+async function app (config) {
   const app = express()
 
   // Apply the 'helmet' middleware to our express application.  Helmet makes
   // sure that our HTTP headers are correctly configure for security and best
   // practices
   app.use(helmet())
+
+  const tasksBackend = config.tasks.backend
 
   // Setup the routes (otherwise known as API endpoints, REST URLS, etc) for
   // our server.  Currently, we just have the `/` route, which handles
@@ -17,16 +19,19 @@ function app (config) {
 
   // Add a route to handle the `GET /tasks` route.  This route responds with a
   // JSON array containing all the tasks that volunteers can work on.
-  app.get('/tasks', (req, res) => {
-    // For now, this is just a dummy message.  Eventually, we will want to be
-    // pulling information from Trello and/or our database back-end.
-    res.json([{
-      taskId: 'taskid',
-      name: 'Task Name',
-      description: 'Task description',
-      status: 'todo'
-    }])
-  })
+  if (tasksBackend) {
+    app.get('/tasks', async (req, res) => {
+      const tasksJson = []
+      for await (const task of tasksBackend.getTasks()) {
+        tasksJson.push(task)
+      }
+      res.json(tasksJson)
+    })
+  } else {
+    app.get('/tasks', async (req, res) => {
+      res.send('no backend configured')
+    })
+  }
 
   // Route to handle `POST /tasks/volunteer`.  This route is called when a
   // user wants to volunteer for a task.  It does not return any data, but
@@ -38,6 +43,10 @@ function app (config) {
     // Everything is OK.
     res.status(201).end()
   })
+
+  if (tasksBackend) {
+    await tasksBackend.init(app)
+  }
 
   return app
 }

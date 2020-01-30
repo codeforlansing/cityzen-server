@@ -1,7 +1,14 @@
 const express = require('express')
 const helmet = require('helmet')
 
+const DefaultConfig = require('./default_config')
+const { merge } = require('./utilities')
+
 async function app (config) {
+  // Merge the passed configuration with the default configuration
+  config = merge(config, DefaultConfig)
+
+  // Instantiate an express server
   const app = express()
 
   // Apply the 'helmet' middleware to our express application.  Helmet makes
@@ -19,19 +26,14 @@ async function app (config) {
 
   // Add a route to handle the `GET /tasks` route.  This route responds with a
   // JSON array containing all the tasks that volunteers can work on.
-  if (tasksBackend) {
-    app.get('/tasks', async (req, res) => {
-      const tasksJson = []
-      for await (const task of tasksBackend.getTasks()) {
-        tasksJson.push(task)
-      }
-      res.json(tasksJson)
-    })
-  } else {
-    app.get('/tasks', async (req, res) => {
-      res.send('no backend configured')
-    })
-  }
+
+  app.get('/tasks', async (req, res) => {
+    const tasksJson = []
+    for await (const task of tasksBackend.getTasks()) {
+      tasksJson.push(task)
+    }
+    res.json(tasksJson)
+  })
 
   // Route to handle `POST /tasks/volunteer`.  This route is called when a
   // user wants to volunteer for a task.  It does not return any data, but

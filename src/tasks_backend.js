@@ -1,3 +1,5 @@
+const express = require('express')
+
 /**
  * A <code>TasksBackend</code> defines a source of tasks, such as a database,
  * a config file or a Trello board.
@@ -8,13 +10,13 @@ module.exports = class TasksBackend {
    * This function may not need to do anything, but it can be used to setup one time authentication
    * or to setup webhooks.
    *
-   * This function does not accept any parameters.
-   * If you want to configure itends behaviour, you should configure the object that contains it instead.
-   *
    * Note that this function is marked as async, which means that you may use async calls when
    * performing the authentication flow.
+   *
+   * @param {object} config the application configuration. See default_config.js for an example
    */
-  async init (express) {
+  async init (config) {
+    return express.Router()
   }
 
   /**

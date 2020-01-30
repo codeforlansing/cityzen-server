@@ -27,7 +27,7 @@ async function app (config) {
   // Add a route to handle the `GET /tasks` route.  This route responds with a
   // JSON array containing all the tasks that volunteers can work on.
 
-  app.get('/tasks', async (req, res) => {
+  app.get(config.tasks.prefix, async (req, res) => {
     const tasksJson = []
     for await (const task of tasksBackend.getTasks()) {
       tasksJson.push(task)
@@ -47,7 +47,10 @@ async function app (config) {
   })
 
   if (tasksBackend) {
-    await tasksBackend.init(app)
+    const tasksRoute = await tasksBackend.init(config)
+    if (tasksRoute) {
+      app.use(config.tasks.backendPrefix, tasksRoute)
+    }
   }
 
   return app

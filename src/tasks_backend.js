@@ -1,3 +1,7 @@
+/**
+ * A <code>TasksBackend</code> defines a source of tasks, such as a database,
+ * a config file or a Trello board.
+ */
 module.exports = class TasksBackend {
   /**
    * Initialize to the backend service.
@@ -5,7 +9,7 @@ module.exports = class TasksBackend {
    * or to setup webhooks.
    *
    * This function does not accept any parameters.
-   * If you want to configure its behaviour, you should configure the object that contains it instead.
+   * If you want to configure itends behaviour, you should configure the object that contains it instead.
    *
    * Note that this function is marked as async, which means that you may use async calls when
    * performing the authentication flow.
@@ -25,7 +29,5 @@ module.exports = class TasksBackend {
    *
    * ?: do we want to allow passing queries, such as "tasks due within X days" here?
    */
-  async * getTasks () {
-    throw new Error('Not Implemented')
-  }
+  async * getTasks () { }
 }

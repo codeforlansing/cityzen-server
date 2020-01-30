@@ -8,7 +8,7 @@ module.exports = {
     'jest/expect-expect': [
       'error',
       {
-        assertFunctionNames: ['supertest']
+        assertFunctionNames: ['supertest', 'expect']
       }
     ]
   }

@@ -1,6 +1,7 @@
 const tasksBackend = {
   none: '../tasks_backend',
-  memory: '../memory_tasks_backend'
+  memory: '../memory_tasks_backend',
+  trello: '../trello_tasks_backend'
 }
 
 const values = Object.keys(tasksBackend)

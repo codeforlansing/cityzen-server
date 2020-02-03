@@ -2,6 +2,6 @@
   "tasks": {
     "prefix": "/tasks",
     "backendPrefix": "/tasks/backend",
-    "backend": "default"
+    "backend": "none"
   }
 }

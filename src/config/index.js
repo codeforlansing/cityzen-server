@@ -58,7 +58,7 @@ const config = convict({
         Use one of: ${tasksBackendFormat.values.join(', ')}
       `,
       format: 'tasks-backend',
-      default: 'default'
+      default: 'none'
     }
   }
 })

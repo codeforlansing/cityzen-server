@@ -1,5 +1,5 @@
 const tasksBackend = {
-  default: '../tasks_backend',
+  none: '../tasks_backend',
   memory: '../memory_tasks_backend'
 }
 

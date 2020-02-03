@@ -18,8 +18,11 @@
   },
   "homepage": "https://github.com/codeforlansing/cityzen-server#readme",
   "dependencies": {
+    "convict": "^5.2.0",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "helmet": "^3.21.2"
+    "helmet": "^3.21.2",
+    "superagent": "^5.2.1"
   },
   "devDependencies": {
     "eslint": "^6.7.2",
@@ -31,7 +34,6 @@
     "eslint-plugin-standard": "^4.0.1",
     "husky": "^3.1.0",
     "jest": "^24.9.0",
-    "superagent": "^5.1.2",
     "supertest": "^4.0.2"
   },
   "husky": {

@@ -1,13 +1,7 @@
 const express = require('express')
 const helmet = require('helmet')
 
-const DefaultConfig = require('./default_config')
-const { merge } = require('./utilities')
-
 async function app (config) {
-  // Merge the passed configuration with the default configuration
-  config = merge(config, DefaultConfig)
-
   // Instantiate an express server
   const app = express()
 

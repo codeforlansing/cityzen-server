@@ -64,32 +64,3 @@ describe('Test that the basic routes return dummy data', () => {
 
   test.todo('POST /user/report')
 })
-
-describe('Test various utility functions', () => {
-  const { merge } = require('../src/utilities')
-
-  test('utilities.merge', () => {
-    expect(merge({}, {})).toEqual({})
-
-    expect(merge({}, { hello: 'world' })).toEqual({ hello: 'world' })
-
-    expect(merge(
-      { foo: 'bar' }, { hello: 'world' }
-    )).toEqual({ hello: 'world', foo: 'bar' })
-
-    expect(merge(
-      { foo: 'bar', hello: 'friend' }, { hello: 'world' })
-    ).toEqual({ hello: 'friend', foo: 'bar' })
-
-    expect(merge(
-      { foo: 'bar', hello: 'friend' }, { hello: 'world', baz: { box: 'bop' } })
-    ).toEqual({ hello: 'friend', foo: 'bar', baz: { box: 'bop' } })
-
-    expect(merge(
-      { foo: 'bar', hello: 'friend', baz: { fox: 'locks' } }, { hello: 'world', baz: { box: 'bop' } })
-    ).toEqual({ hello: 'friend', foo: 'bar', baz: { box: 'bop', fox: 'locks' } })
-    expect(merge(
-      { foo: 'bar', hello: 'friend', baz: { box: 'pop', fox: 'locks' } }, { hello: 'world', baz: { box: 'bop' } })
-    ).toEqual({ hello: 'friend', foo: 'bar', baz: { box: 'pop', fox: 'locks' } })
-  })
-})

@@ -59,6 +59,37 @@ const config = convict({
       `,
       format: 'tasks-backend',
       default: 'none'
+    },
+    trelloApiKey: {
+      doc: `
+        The key used to access Trello's REST API. Sign-in to Trello and visit
+        https://trello.com/app-key to generate a key.
+        Required if config.tasks.backend is 'trello'.
+      `,
+      format: String,
+      default: '',
+      env: 'TRELLO_API_KEY'
+    },
+    trelloApiToken: {
+      doc: `
+        The token used to access Trello's REST API. Sign-in to Trello and visit
+        https://trello.com/app-key, then click the Token link after generating
+        a key to generate a token.
+        Required if config.tasks.backend is 'trello'.
+      `,
+      format: String,
+      default: '',
+      env: 'TRELLO_API_TOKEN'
+    },
+    trelloListId: {
+      doc: `
+        Trello's internal identifier for the list where tasks should be
+        retrieved. Use the board ID and the list name to look up the list ID.
+        Required if config.tasks.backend is 'trello'.
+      `,
+      format: String,
+      default: '',
+      env: 'TRELLO_LIST_ID'
     }
   }
 })

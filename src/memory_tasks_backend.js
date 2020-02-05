@@ -1,12 +1,37 @@
 var express = require('express')
 const TasksBackend = require('./tasks_backend')
 
+/**
+ * An in-memory source of tasks that allows programmatically setting tasks
+ * or using an internal HTTP route to upload tasks.
+ */
 module.exports = class MemoryTasksBackend extends TasksBackend {
   constructor () {
     super()
     this.tasks = []
   }
 
+  /**
+   * Initializes the in-memory backend service. An Express route is also
+   * configured to allow an HTTP PUT to the `tasks.backendPrefix` endpoint
+   * to replace the in-memory tasks with a new value. The body of this
+   * request will look like:
+   *
+   * ``` json
+   * [
+   *   {
+   *     "taskId": "998712e8127",
+   *     "name": "New todo item",
+   *     "description": "A longer description",
+  *      "status": "todo"
+   *   },
+   *   ...
+   * ]
+   * ```
+   *
+   * @param {*} config
+   * @returns an Express router
+   */
   async init (config) {
     const router = await super.init(config)
     router.use(express.json())
@@ -19,12 +44,23 @@ module.exports = class MemoryTasksBackend extends TasksBackend {
     return router
   }
 
+  /**
+   * Produces a sequence of tasks stored in memory.
+   *
+   * @returns a generator of saved tasks
+   */
   async * getTasks () {
     for (const task of this.tasks) {
       yield task
     }
   }
 
+  /**
+   * A programmatic means of setting the in-memory tasks that this backend
+   * will produce when `getTasks()` is called.
+   *
+   * @param {*} tasks an array of tasks
+   */
   async setTasks (tasks) {
     this.tasks = tasks || []
   }

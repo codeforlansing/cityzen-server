@@ -8,4 +8,7 @@ const port = 3000
 // This actually starts the server listening at port on our local IP address.
 app({
   // pass the application configuration here
-}).listen(port, () => console.log(`Example app listening on port ${port}!`))
+}).then(async (server) => {
+  const msg = `Example app listening on port ${port}!`
+  await server.listen(port, () => console.log(msg))
+})

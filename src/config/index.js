@@ -60,6 +60,13 @@ const config = convict({
       format: 'tasks-backend',
       default: 'none'
     },
+    trelloApiBaseUrl: {
+      doc: `
+        The base URL of the Trello API. Defaults to 'https://api.trello.com/1'.
+      `,
+      format: String,
+      default: 'https://api.trello.com/1'
+    },
     trelloApiKey: {
       doc: `
         The key used to access Trello's REST API. Sign-in to Trello and visit

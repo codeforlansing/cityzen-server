@@ -1,14 +1,10 @@
+const config = require('./src/config')
 const app = require('./src/app')
 
-// Set the port our application will run on.  Currently we are hard coding
-// this, but eventually we will want to be loading information like this from
-// a settings file for an environment variable.
-const port = 3000
-
-// This actually starts the server listening at port on our local IP address.
-app({
-  // pass the application configuration here
-}).then(async (server) => {
-  const msg = `Example app listening on port ${port}!`
-  await server.listen(port, () => console.log(msg))
+// Start the server listening at configured port on our local IP address.
+app(config).then(server => {
+  server.listen(
+    config.server.port,
+    () => console.log(`Listening on port ${config.server.port}.`)
+  )
 })

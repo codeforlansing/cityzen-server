@@ -13,7 +13,7 @@ module.exports = class TasksBackend {
    * Note that this function is marked as async, which means that you may use async calls when
    * performing the authentication flow.
    *
-   * @param {object} config the application configuration. See default_config.js for an example
+   * @param {object} config the application configuration. See config/index.js for full schema
    */
   async init (config) {
     return express.Router()

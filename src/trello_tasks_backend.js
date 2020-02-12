@@ -1,14 +1,59 @@
 const superagent = require('superagent')
 const TasksBackend = require('./tasks_backend')
+const convict = require('convict')
 
 /**
  * Uses Trello as the source of tasks for the backend.
+ * @extends {TasksBackend<{ apiBaseUrl: string; apiKey: string; apiToken: string; listId: string; }>}
  */
-module.exports = class TrelloTasksBackend extends TasksBackend {
+class TrelloTasksBackend extends TasksBackend {
+  convictConfig () {
+    return convict({
+      apiBaseUrl: {
+        doc: `
+        The base URL of the Trello API. Defaults to 'https://api.trello.com/1'.
+      `,
+        format: String,
+        default: 'https://api.trello.com/1'
+      },
+      apiKey: {
+        doc: `
+        The key used to access Trello's REST API. Sign-in to Trello and visit
+        https://trello.com/app-key to generate a key.
+        Required if config.tasks.backend is 'trello'.
+      `,
+        format: String,
+        default: '',
+        env: 'TRELLO_API_KEY'
+      },
+      apiToken: {
+        doc: `
+        The token used to access Trello's REST API. Sign-in to Trello and visit
+        https://trello.com/app-key, then click the Token link after generating
+        a key to generate a token.
+        Required if config.tasks.backend is 'trello'.
+      `,
+        format: String,
+        default: '',
+        env: 'TRELLO_API_TOKEN'
+      },
+      listId: {
+        doc: `
+        Trello's internal identifier for the list where tasks should be
+        retrieved. Use the board ID and the list name to look up the list ID.
+        Required if config.tasks.backend is 'trello'.
+      `,
+        format: String,
+        default: '',
+        env: 'TRELLO_LIST_ID'
+      }
+    })
+  }
+
   /**
    * Initialize the backend service.
    *
-   * @param {object} config the application configuration
+   * @param { ReturnType<ReturnType<TrelloTasksBackend["convictConfig"]>["getProperties"]> } config the application configuration
    */
   async init (config) {
     this.config = config
@@ -18,10 +63,10 @@ module.exports = class TrelloTasksBackend extends TasksBackend {
    * Retrieve a list of tasks from Trello.
    */
   async * getTasks () {
-    const baseUrl = this.config.tasks.trelloApiBaseUrl
-    const key = this.config.tasks.trelloApiKey
-    const token = this.config.tasks.trelloApiToken
-    const listId = this.config.tasks.trelloListId
+    const baseUrl = this.config.apiBaseUrl
+    const key = this.config.apiKey
+    const token = this.config.apiToken
+    const listId = this.config.listId
 
     const response = await superagent
       .get(`${baseUrl}/lists/${listId}/cards?key=${key}&token=${token}`)
@@ -31,8 +76,12 @@ module.exports = class TrelloTasksBackend extends TasksBackend {
         taskId: card.id,
         name: card.name,
         description: card.desc,
+        /** @type {'todo'} */
+        // @ts-ignore
         status: 'todo'
       }
     }
   }
 }
+
+module.exports = TrelloTasksBackend

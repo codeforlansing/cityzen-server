@@ -1,6 +1,13 @@
+
 const express = require('express')
 const helmet = require('helmet')
 
+/**
+ * Builds the application, returning an express app that can be launched or used for testing.
+ * Note that this function does not start the server itself. See ./index.js
+ *
+ * @param { import("./config")["configData"] } config the application configuration. See ./config/index.js for more information
+ */
 async function app (config) {
   // Instantiate an express server
   const app = express()
@@ -10,7 +17,8 @@ async function app (config) {
   // practices
   app.use(helmet())
 
-  const tasksBackend = config.tasks.backend
+  // eslint-disable-next-line new-cap
+  const tasksBackend = config.tasks.backend.backend
 
   // Setup the routes (otherwise known as API endpoints, REST URLS, etc) for
   // our server.  Currently, we just have the `/` route, which handles
@@ -41,7 +49,16 @@ async function app (config) {
   })
 
   if (tasksBackend) {
-    const tasksRoute = await tasksBackend.init(config)
+    const backendConfig = config.tasks.backend.backend.convictConfig()
+    if (backendConfig) {
+      backendConfig.load(config.tasks.backend.config)
+    }
+
+    const tasksRoute = await tasksBackend.init(
+      backendConfig && backendConfig.getProperties(),
+      config
+    )
+
     if (tasksRoute) {
       app.use(config.tasks.backendPrefix, tasksRoute)
     }

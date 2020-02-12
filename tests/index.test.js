@@ -1,13 +1,15 @@
 const supertest = require('supertest')
 const app = require('../src/app')
-const config = require('../src/config')
+const { loadConfig } = require('../src/config')
 const MemoryTasksBackend = require('../src/memory_tasks_backend')
 
 describe('Test that the basic routes return dummy data', () => {
   // Jest doesn't pass command line arguments through to tests:
   // https://github.com/facebook/jest/issues/5089
   // For now, override the backend config manually.
-  config.tasks.backend = new MemoryTasksBackend()
+  const backend = new MemoryTasksBackend()
+  const config = loadConfig()
+  config.tasks.backend.backend = backend
 
   test('PUT /tasks/backend/', async () => {
     const { body } = await supertest(await app(config))
@@ -32,7 +34,9 @@ describe('Test that the basic routes return dummy data', () => {
   })
 
   test('GET /tasks/', async () => {
-    await config.tasks.backend.setTasks([{
+    // TODO: this may cause problems in the future, because this will change what's in
+    // the tasks list for subsequent tests
+    await backend.setTasks([{
       taskId: 'taskid',
       name: 'Task Name',
       description: 'Task description',

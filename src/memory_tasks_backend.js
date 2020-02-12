@@ -8,6 +8,8 @@ const TasksBackend = require('./tasks_backend')
 module.exports = class MemoryTasksBackend extends TasksBackend {
   constructor () {
     super()
+
+    /** @type {import("./tasks_backend").Task[]} */
     this.tasks = []
   }
 
@@ -29,11 +31,10 @@ module.exports = class MemoryTasksBackend extends TasksBackend {
    * ]
    * ```
    *
-   * @param {*} config
-   * @returns an Express router
+   * @returns { import("express").Router } an Express router
    */
-  async init (config) {
-    const router = await super.init(config)
+  init () {
+    const router = express.Router()
     router.use(express.json())
 
     router.put('/', async (req, res) => {
@@ -59,7 +60,7 @@ module.exports = class MemoryTasksBackend extends TasksBackend {
    * A programmatic means of setting the in-memory tasks that this backend
    * will produce when `getTasks()` is called.
    *
-   * @param {*} tasks an array of tasks
+   * @param {import("./tasks_backend").Task[]} tasks an array of tasks
    */
   async setTasks (tasks) {
     this.tasks = tasks || []

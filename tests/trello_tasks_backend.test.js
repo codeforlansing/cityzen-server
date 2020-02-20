@@ -99,4 +99,33 @@ describe('Test Handling Requests to and from Trello', () => {
 
     scope.done()
   })
+
+  test('GET /tasks/ 500', async () => {
+    const scope = nock('https://api.trello.com')
+      .get(`/1/lists/${listId}/cards?key=${apiKey}&token=${apiToken}`)
+      .reply(500)
+
+    const { body } = await supertest(await app(config))
+      .get('/tasks/')
+      .expect(503)
+
+    expect(body.originalStatus).toBe(500)
+    expect(body.message).toBe('Unexpected Response')
+
+    scope.done()
+  })
+  test('GET /tasks/ 404', async () => {
+    const scope = nock('https://api.trello.com')
+      .get(`/1/lists/${listId}/cards?key=${apiKey}&token=${apiToken}`)
+      .reply(404)
+
+    const { body } = await supertest(await app(config))
+      .get('/tasks/')
+      .expect(503)
+
+    expect(body.originalStatus).toBe(404)
+    expect(body.message).toBe('Misconfigured')
+
+    scope.done()
+  })
 })

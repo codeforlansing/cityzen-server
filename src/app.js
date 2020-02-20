@@ -28,13 +28,31 @@ async function app (config) {
 
   // Add a route to handle the `GET /tasks` route.  This route responds with a
   // JSON array containing all the tasks that volunteers can work on.
-
   app.get(config.tasks.prefix, async (req, res) => {
-    const tasksJson = []
-    for await (const task of tasksBackend.getTasks()) {
-      tasksJson.push(task)
+    try {
+      const tasksJson = []
+
+      for await (const task of tasksBackend.getTasks()) {
+        tasksJson.push(task)
+      }
+      res.json(tasksJson)
+    } catch (error) {
+      if (error.status >= 400 && error.status < 500) {
+        res.status(503).json({
+          originalName: error.name,
+          originalMessage: error.message,
+          originalStatus: error.status,
+          message: 'Misconfigured'
+        })
+      } else {
+        res.status(503).json({
+          originalName: error.name,
+          originalMessage: error.message,
+          originalStatus: error.status,
+          message: 'Unexpected Response'
+        })
+      }
     }
-    res.json(tasksJson)
   })
 
   // Route to handle `POST /tasks/volunteer`.  This route is called when a

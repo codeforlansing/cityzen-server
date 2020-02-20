@@ -152,6 +152,7 @@ experience of looking at and editing this project _super nice_.
 - _npm_ by egamma
 - _npm Intellisense_ by Christian Kohler
 - _VSCode Essentials Snippets_ by Roberto Achar
+- _Jest_ by Orta
 
 Restart VS Code after installing all of these extensions.
 

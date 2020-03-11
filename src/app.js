@@ -31,27 +31,12 @@ async function app (config) {
   app.get(config.tasks.prefix, async (req, res) => {
     try {
       const tasksJson = []
-
       for await (const task of tasksBackend.getTasks()) {
         tasksJson.push(task)
       }
       res.json(tasksJson)
     } catch (error) {
-      if (error.status >= 400 && error.status < 500) {
-        res.status(503).json({
-          originalName: error.name,
-          originalMessage: error.message,
-          originalStatus: error.status,
-          message: 'Misconfigured'
-        })
-      } else {
-        res.status(503).json({
-          originalName: error.name,
-          originalMessage: error.message,
-          originalStatus: error.status,
-          message: 'Unexpected Response'
-        })
-      }
+      res.status(503).json(error)
     }
   })
 

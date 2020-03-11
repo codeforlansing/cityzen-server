@@ -1,29 +1,15 @@
-const supertest = require('supertest')
-const app = require('../src/app')
-const { loadConfig } = require('../src/config')
 const TrelloTasksBackend = require('../src/trello_tasks_backend')
 const nock = require('nock')
 
-describe('Test Handling Requests to and from Trello', () => {
-  // Jest doesn't pass command line arguments through to tests:
-  // https://github.com/facebook/jest/issues/5089
-  // For now, override the backend config manually.
-  const backend = new TrelloTasksBackend()
-  const config = loadConfig()
-  config.tasks.backend.backend = backend
-  const listId = 5
-  const apiKey = 'yeKipa'
-  const apiToken = 'nekpoTipa'
-  const trelloConfig = {
-    listId,
-    apiKey,
-    apiToken
-  }
+describe('Test handling requests to and from Trello', () => {
+  test('Successfully get and translate tasks from Trello', async () => {
+    const tasksBackend = new TrelloTasksBackend()
+    const apiBaseUrl = 'https://api.trello.com/1'
+    const listId = '5'
+    const apiKey = 'yeKipa'
+    const apiToken = 'nekpoTipa'
+    const config = { apiBaseUrl, listId, apiKey, apiToken }
 
-  Object.assign(config.tasks.backend.config, trelloConfig)
-
-  // test getting tasks
-  test('GET /tasks/', async () => {
     const scope = nock('https://api.trello.com')
       .get(`/1/lists/${listId}/cards?key=${apiKey}&token=${apiToken}`)
       .reply(200, [
@@ -85,47 +71,67 @@ describe('Test Handling Requests to and from Trello', () => {
         }
       ])
 
-    const { body } = await supertest(await app(config))
-      .get('/tasks/')
-      .expect('Content-Type', 'application/json; charset=utf-8')
-      .expect(200)
+    try {
+      await tasksBackend.init(config)
 
-    expect(body).toEqual([{
-      taskId: '5cf705cfe9bb5d1d62d03375',
-      name: 'Test Card',
-      description: 'description of card',
-      status: 'todo'
-    }])
+      const tasks = []
+      for await (const task of tasksBackend.getTasks()) {
+        tasks.push(task)
+      }
 
-    scope.done()
+      expect(tasks.length).toBe(1)
+      expect(tasks[0]).toEqual({
+        taskId: '5cf705cfe9bb5d1d62d03375',
+        name: 'Test Card',
+        description: 'description of card',
+        status: 'todo'
+      })
+    } finally {
+      scope.done()
+    }
   })
 
-  test('GET /tasks/ 500', async () => {
+  test('Gracefully handles unexpected error from Trello', async () => {
+    const tasksBackend = new TrelloTasksBackend()
+    const apiBaseUrl = 'https://api.trello.com/1'
+    const listId = '5'
+    const apiKey = 'yeKipa'
+    const apiToken = 'nekpoTipa'
+    const config = { apiBaseUrl, listId, apiKey, apiToken }
+
     const scope = nock('https://api.trello.com')
       .get(`/1/lists/${listId}/cards?key=${apiKey}&token=${apiToken}`)
       .reply(500)
 
-    const { body } = await supertest(await app(config))
-      .get('/tasks/')
-      .expect(503)
-
-    expect(body.originalStatus).toBe(500)
-    expect(body.message).toBe('Unexpected Response')
-
-    scope.done()
+    try {
+      await tasksBackend.init(config)
+      await expect(tasksBackend.getTasks().next()).rejects.toThrowError(
+        'Trello cannot be reached for an unknown reason.'
+      )
+    } finally {
+      scope.done()
+    }
   })
-  test('GET /tasks/ 404', async () => {
+
+  test('Gracefully handles Not Found error from Trello', async () => {
+    const tasksBackend = new TrelloTasksBackend()
+    const apiBaseUrl = 'https://api.trello.com/1'
+    const listId = '5'
+    const apiKey = 'yeKipa'
+    const apiToken = 'nekpoTipa'
+    const config = { apiBaseUrl, listId, apiKey, apiToken }
+
     const scope = nock('https://api.trello.com')
       .get(`/1/lists/${listId}/cards?key=${apiKey}&token=${apiToken}`)
       .reply(404)
 
-    const { body } = await supertest(await app(config))
-      .get('/tasks/')
-      .expect(503)
-
-    expect(body.originalStatus).toBe(404)
-    expect(body.message).toBe('Misconfigured')
-
-    scope.done()
+    try {
+      await tasksBackend.init(config)
+      await expect(tasksBackend.getTasks().next()).rejects.toThrowError(
+        'Trello cannot be accessed. The server is likely misconfigured.'
+      )
+    } finally {
+      scope.done()
+    }
   })
 })

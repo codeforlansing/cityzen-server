@@ -1,6 +1,7 @@
 const superagent = require('superagent')
-const TasksBackend = require('./tasks_backend')
 const convict = require('convict')
+const TasksBackend = require('./tasks_backend')
+const errorAndLog = require('./error_and_log')
 
 /**
  * Uses Trello as the source of tasks for the backend.
@@ -63,23 +64,33 @@ class TrelloTasksBackend extends TasksBackend {
    * Retrieve a list of tasks from Trello.
    */
   async * getTasks () {
-    const baseUrl = this.config.apiBaseUrl
-    const key = this.config.apiKey
-    const token = this.config.apiToken
-    const listId = this.config.listId
+    try {
+      const baseUrl = this.config.apiBaseUrl
+      const key = this.config.apiKey
+      const token = this.config.apiToken
+      const listId = this.config.listId
 
-    const response = await superagent
-      .get(`${baseUrl}/lists/${listId}/cards?key=${key}&token=${token}`)
+      const requestUrl = `${baseUrl}/lists/${listId}/cards?key=${key}&token=${token}`
+      const response = await superagent.get(requestUrl)
 
-    for (const card of response.body) {
-      yield {
-        taskId: card.id,
-        name: card.name,
-        description: card.desc,
-        /** @type {'todo'} */
-        // @ts-ignore
-        status: 'todo'
+      for (const card of response.body) {
+        yield {
+          taskId: card.id,
+          name: card.name,
+          description: card.desc,
+          /** @type {'todo'} */
+          // @ts-ignore
+          status: 'todo'
+        }
       }
+    } catch (error) {
+      let message
+      if (error.status >= 400 && error.status < 500) {
+        message = 'Trello cannot be accessed. The server is likely misconfigured.'
+      } else {
+        message = 'Trello cannot be reached for an unknown reason.'
+      }
+      throw errorAndLog(message, error)
     }
   }
 }

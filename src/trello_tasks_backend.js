@@ -1,7 +1,7 @@
 const superagent = require('superagent')
 const convict = require('convict')
 const TasksBackend = require('./tasks_backend')
-const errorAndLog = require('./error_and_log')
+const ServerError = require('./server_error')
 
 /**
  * Uses Trello as the source of tasks for the backend.
@@ -90,7 +90,7 @@ class TrelloTasksBackend extends TasksBackend {
       } else {
         message = 'Trello cannot be reached for an unknown reason.'
       }
-      throw errorAndLog(message, error)
+      throw new ServerError(message, error)
     }
   }
 }

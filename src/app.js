@@ -1,6 +1,7 @@
 
 const express = require('express')
 const helmet = require('helmet')
+const logError = require('./logging/log_error')
 
 /**
  * Builds the application, returning an express app that can be launched or used for testing.
@@ -36,6 +37,7 @@ async function app (config) {
       }
       res.json(tasksJson)
     } catch (error) {
+      logError(error)
       res.status(503).json(error)
     }
   })

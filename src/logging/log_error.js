@@ -1,4 +1,5 @@
 const isLoggingEnabled = require('./is_logging_enabled')
+const ServerError = require('../server_error')
 const uuidv4 = require('uuid').v4
 
 /**
@@ -23,16 +24,17 @@ const uuidv4 = require('uuid').v4
  * (correlation ID). The second line is the message, and the third and
  * subsequent lines are the original error and stack trace.
  *
- * @typedef { typeof import("../server_error") } ServerError
  * @param {ServerError | Error} error the error to log
  * @param {string=} message an optional message to log
  */
 module.exports = (error, message) => {
   if (!isLoggingEnabled()) return
 
-  // @ts-ignore
-  const correlationId = error.correlationId || uuidv4()
-  console.group(new Date(), correlationId)
+  const correlationId = error instanceof ServerError
+    ? error.correlationId
+    : uuidv4()
+
+  console.group(new Date().toISOString(), correlationId)
   if (message) {
     console.error(message)
   }

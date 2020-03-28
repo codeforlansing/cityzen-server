@@ -33,9 +33,7 @@ function createConfig () {
         format: 'port',
         default: 3000,
         env: 'PORT'
-      }
-    },
-    tasks: {
+      },
       prefix: {
         doc: `
       The API path used to get tasks, so for example if you wanted
@@ -43,18 +41,10 @@ function createConfig () {
       it would be at /tasks.
     `,
         format: 'root-relative-path',
-        default: '/tasks'
-      },
-      backendPrefix: {
-        doc: `
-      The prefix where additional backend endpoints will be mounted.
-      If backend.init() returns an express.Router(), then it will be
-      mounted at /tasks/backend. This may be used for setting up
-      backend specific endpoints or Oauth callbacks, etc.
-    `,
-        format: 'root-relative-path',
-        default: '/tasks/backend'
-      },
+        default: '/'
+      }
+    },
+    tasks: {
       backend: {
         backend: {
           doc: `
@@ -63,6 +53,16 @@ function createConfig () {
       `,
           format: 'tasks-backend',
           default: new TasksBackend()
+        },
+        prefix: {
+          doc: `
+        The prefix where additional backend endpoints will be mounted.
+        If backend.init() returns an express.Router(), then it will be
+        mounted at /tasks/backend. This may be used for setting up
+        backend specific endpoints or Oauth callbacks, etc.
+      `,
+          format: 'root-relative-path',
+          default: '/tasks/backend'
         },
         config: {
           doc: `
@@ -80,7 +80,7 @@ function createConfig () {
 }
 
 /**
- * @typedef {ReturnType<ReturnType<createConfig>["getProperties"]>} Config A configuration object
+ * @typedef { ReturnType<ReturnType<typeof createConfig>["getProperties"]> } Config A configuration object
  */
 
 /**

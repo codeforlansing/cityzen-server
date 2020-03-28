@@ -7,29 +7,25 @@ const logError = require('./logging/log_error')
  * Builds the application, returning an express app that can be launched or used for testing.
  * Note that this function does not start the server itself. See ./index.js
  *
- * @param { import("./config")["configData"] } config the application configuration. See ./config/index.js for more information
+ * @param { ReturnType<import("./config")["loadConfig"]> } config the application configuration. See ./config/index.js for more information
  */
 async function app (config) {
   // Instantiate an express server
-  const app = express()
+  const app = express.Router()
 
   // Apply the 'helmet' middleware to our express application.  Helmet makes
   // sure that our HTTP headers are correctly configure for security and best
   // practices
   app.use(helmet())
 
-  // eslint-disable-next-line new-cap
   const tasksBackend = config.tasks.backend.backend
 
   // Setup the routes (otherwise known as API endpoints, REST URLS, etc) for
-  // our server.  Currently, we just have the `/` route, which handles
-  // requests to the applications root URL, e.g. "example.com/" but not
-  // "example.com/api".
-  app.get('/', (req, res) => res.send('Hello World!'))
+  // our server.
 
   // Add a route to handle the `GET /tasks` route.  This route responds with a
   // JSON array containing all the tasks that volunteers can work on.
-  app.get(config.tasks.prefix, async (req, res) => {
+  app.get('/tasks/', async (req, res) => {
     try {
       const tasksJson = []
       for await (const task of tasksBackend.getTasks()) {
@@ -65,11 +61,11 @@ async function app (config) {
     )
 
     if (tasksRoute) {
-      app.use(config.tasks.backendPrefix, tasksRoute)
+      app.use(config.tasks.backend.prefix, tasksRoute)
     }
   }
 
-  return app
+  return express().use(config.server.prefix, app)
 }
 
 module.exports = app

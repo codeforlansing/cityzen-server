@@ -1,8 +1,7 @@
 {
   "tasks": {
-    "prefix": "/tasks",
-    "backendPrefix": "/tasks/backend",
     "backend": { 
+      "prefix": "/tasks/backend",
       "backend": "trello",
       "config": {
         "apiKey": "123"

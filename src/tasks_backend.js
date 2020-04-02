@@ -49,7 +49,7 @@ module.exports = class TasksBackend {
    * this is meant to accommodate APIs that paginate their results.
    *
    * ?: do we want to allow passing queries, such as "tasks due within X days" here?
-   * @returns { AsyncGenerator<Task, void, unknown> }
+   * @returns { AsyncGenerator<Task> | Generator<Task> | AsyncIterable<Task> | Iterable<Task> }
    */
-  async * getTasks () { }
+  getTasks () { return [] }
 }

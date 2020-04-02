@@ -1,10 +1,12 @@
 require('dotenv').config()
 const convict = require('convict')
 const TasksBackend = require('../tasks_backend')
+const VolunteerProvider = require('../volunteer')
 const path = require('path')
 
 const rootRelativePathFormat = require('./root_relative_path_format')
 const tasksBackendFormat = require('./tasks_backend_format')
+const volunteerProviderFormat = require('./volunteer_provider_format')
 
 convict.addFormat(rootRelativePathFormat)
 convict.addFormat(tasksBackendFormat)
@@ -42,6 +44,36 @@ function createConfig () {
     `,
         format: 'root-relative-path',
         default: '/'
+      }
+    },
+    volunteers: {
+      provider: {
+        prefix: {
+          doc: `
+        The prefix where additional endpoints for a volunteer provider will be mounted.
+        If VolunteerProvider.init() returns an express.Router(), then it will be
+        mounted at /volunteers/provider. This may be used for setting up
+        backend specific endpoints or Oauth callbacks, etc.
+      `,
+          format: 'root-relative-path',
+          default: '/volunteers/provider'
+        },
+        provider: {
+          doc: `
+          The name of the volunteer provider to be used for this service. 
+          Use one of: ${volunteerProviderFormat.values.join(', ')}
+          `,
+          format: 'volunteer-provider',
+          default: new VolunteerProvider()
+        },
+        config: {
+          doc: `
+        The configuration data specific to the VolunteerProvider. 
+        For example, this may be used to configure API keys
+      `,
+          format: '*',
+          default: {}
+        }
       }
     },
     tasks: {

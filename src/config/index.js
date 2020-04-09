@@ -1,15 +1,16 @@
 require('dotenv').config()
 const convict = require('convict')
 const TasksBackend = require('../tasks_backend')
-const VolunteerProvider = require('../volunteer')
+const UserProvider = require('../users')
 const path = require('path')
 
 const rootRelativePathFormat = require('./root_relative_path_format')
 const tasksBackendFormat = require('./tasks_backend_format')
-const volunteerProviderFormat = require('./volunteer_provider_format')
+const userProviderFormat = require('./user_provider_format')
 
 convict.addFormat(rootRelativePathFormat)
 convict.addFormat(tasksBackendFormat)
+convict.addFormat(userProviderFormat)
 
 function createConfig () {
   const config = convict({
@@ -46,29 +47,29 @@ function createConfig () {
         default: '/'
       }
     },
-    volunteers: {
+    users: {
       provider: {
         prefix: {
           doc: `
-        The prefix where additional endpoints for a volunteer provider will be mounted.
-        If VolunteerProvider.init() returns an express.Router(), then it will be
-        mounted at /volunteers/provider. This may be used for setting up
+        The prefix where additional endpoints for a user provider will be mounted.
+        If userProvider.init() returns an express.Router(), then it will be
+        mounted at /users/provider. This may be used for setting up
         backend specific endpoints or Oauth callbacks, etc.
       `,
           format: 'root-relative-path',
-          default: '/volunteers/provider'
+          default: '/users/provider'
         },
         provider: {
           doc: `
-          The name of the volunteer provider to be used for this service. 
-          Use one of: ${volunteerProviderFormat.values.join(', ')}
+          The name of the user provider to be used for this service. 
+          Use one of: ${userProviderFormat.values.join(', ')}
           `,
-          format: 'volunteer-provider',
-          default: new VolunteerProvider()
+          format: 'user-provider',
+          default: new UserProvider()
         },
         config: {
           doc: `
-        The configuration data specific to the VolunteerProvider. 
+        The configuration data specific to the userProvider. 
         For example, this may be used to configure API keys
       `,
           format: '*',

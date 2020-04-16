@@ -79,7 +79,7 @@ from us, and make it easier to send us helpful improvements that you've made.
 To get the code from GitHub, you will need to install
 [`git`](https://git-scm.com/downloads) on your computer and then use `git clone`
 to download the project to your computer.  If you are new to git, you might look at:
-  - JLord's [git-it](https://github.com/jlord/git-it-electron) gamified learning method
+  - Jessica Lord's [git-it](https://github.com/jlord/git-it-electron) gamified learning application 
   - Coursera's video course [Introduction to git and github](https://www.coursera.org/learn/introduction-git-github)
   - Flatiron School's blog post [intro to git](https://flatironschool.com/blog/an-introduction-to-git)
 

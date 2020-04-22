@@ -26,10 +26,6 @@ class MemoryUser extends UserProvider.User {
   doesClaimTask (taskId) {
     return this.claimedTasks.has(taskId)
   }
-
-  getClaimedTasks () {
-    return [...this.claimedTasks]
-  }
 }
 
 /**
@@ -46,7 +42,7 @@ class MemoryVolunteerProvider extends UserProvider {
   }
 
   /**
-   *  Adds a new user to this user provider
+   * Adds a new user to this user provider
    * @param {string} userId The id of the user to add
    */
   addUser (userId) {
@@ -60,15 +56,6 @@ class MemoryVolunteerProvider extends UserProvider {
       return this.users.get(userId)
     } else {
       return undefined
-    }
-  }
-
-  // TODO: should this exist? It could be used to find out personal information
-  * getClaimants (taskId) {
-    for (const user of this.users.values()) {
-      if (user.doesClaimTask(taskId)) {
-        yield user
-      }
     }
   }
 }

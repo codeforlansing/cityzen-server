@@ -37,24 +37,6 @@ class User {
    * @abstract
    */
   unclaimTasks (taskIds) { throw new Error('unimplemented') }
-
-  /**
-   * Checks if this user has claimed a given task
-   * @param {string} taskId
-   * @returns {PromiseLike<boolean> | boolean}
-   * @abstract
-   */
-  doesClaimTask (taskId) {
-    throw new Error('unimplemented')
-  }
-
-  /**
-   * Fetches all tasks this user has claimed
-   *
-   * @returns { AsyncGenerator<string> | Generator<string> | AsyncIterable<string> | Iterable<string> }
-   * @abstract
-   */
-  getClaimedTasks () { throw new Error('unimplemented') }
 }
 
 /**
@@ -93,15 +75,6 @@ class UserProvider {
    * @returns {PromiseLike<U | undefined> | U | undefined }
    */
   getUser (userId) { throw new Error('unimplemented') }
-
-  /**
-   * Fetches all the users who have claimed this task id.
-   *
-   * @param {string} taskId - The task id we want to query against
-   * @returns { AsyncGenerator<U> | Generator<U> | AsyncIterable<U> | Iterable<U> }
-   * @abstract
-   */
-  getClaimants (taskId) { throw new Error('unimplemented') }
 }
 
 /**
@@ -170,26 +143,6 @@ async function mount (userProvider, providerConfig, config) {
 
       if (user) {
         res.json({ id: user.id })
-      } else {
-        res.status(404).end()
-      }
-    } catch (error) {
-      logError(error)
-      res.status(500).json(error)
-    }
-  })
-
-  // Route to handle `GET /users/:id/tasks/`. This route will return all the tasks currently claimed by that user. It will return 404 if an invalid user is given
-  router.get('/:id/tasks/', async (req, res) => {
-    try {
-      const { id } = req.params
-
-      const user = await userProvider.getUser(id)
-
-      if (user) {
-        const tasks = []
-        for await (const task of user.getClaimedTasks()) { tasks.push(task) }
-        res.json(tasks)
       } else {
         res.status(404).end()
       }

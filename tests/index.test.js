@@ -123,42 +123,5 @@ describe('Test that the basic routes return dummy data', () => {
       .expect(404)
   })
 
-  test('GET /users/id/ single user', async () => {
-    const config = loadConfig()
-    const provider = new MemoryUserProvider()
-    config.users.provider.provider = provider
-
-    provider.addUser('example@example.com')
-
-    const { body } = await supertest(await app(config))
-      .get('/users/example@example.com')
-      .expect(200)
-      .expect('Content-Type', 'application/json; charset=utf-8')
-
-    expect(body).toEqual({
-      id: 'example@example.com'
-    })
-  })
-
-  test('GET /users/id/tasks single user', async () => {
-    const config = loadConfig()
-    const provider = new MemoryUserProvider()
-    config.users.provider.provider = provider
-
-    await supertest(await app(config))
-      .get('/users/example@example.com/tasks')
-      .expect(404)
-
-    const user = provider.addUser('example@example.com')
-    user.claimTasks(['uuid1', 'uuid2'])
-
-    const { body } = await supertest(await app(config))
-      .get('/users/example@example.com/tasks')
-      .expect(200)
-      .expect('Content-Type', 'application/json; charset=utf-8')
-
-    expect(body).toEqual(['uuid1', 'uuid2'])
-  })
-
   test.todo('POST /user/report')
 })

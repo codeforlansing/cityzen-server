@@ -23,20 +23,6 @@ class User {
   * @abstract
   */
   claimTasks (taskIds) { throw new Error('unimplemented') }
-
-  /**
-   * Specify that the given user would like to stop working on the given tasks.
-   * This is not expected to check if the taskId belongs to a valid tasks.
-   *
-   * If the user is not already working on the given task, then this should succeeded silently
-   *
-   * If the given user does not exist, then this should return false. Otherwise it should return true
-   *
-   * @param { string[] } taskIds - The ids of the tasks which will be unclaimed by this user.
-   * @returns { PromiseLike<void> | void }
-   * @abstract
-   */
-  unclaimTasks (taskIds) { throw new Error('unimplemented') }
 }
 
 /**
@@ -100,29 +86,6 @@ async function mount (userProvider, providerConfig, config) {
 
       if (user) {
         await user.claimTasks(tasks)
-        // Everything is OK.
-        res.status(201).end()
-      } else {
-        res.status(404).end()
-      }
-    } catch (error) {
-      logError(error)
-      res.status(500).json(error)
-    }
-  })
-
-  // Route to handle `POST /users/:id/tasks/claim`.  This route is called when a
-  // user wants to not user for a task.  It does not return any data, but
-  // should send a 201 HTTP status code to indicate that everything went OK.
-  router.post('/:id/tasks/unclaim', async (req, res) => {
-    try {
-      const { id } = req.params
-      const { tasks } = req.body
-
-      const user = await userProvider.getUser(id)
-
-      if (user) {
-        await user.unclaimTasks(tasks)
         // Everything is OK.
         res.status(201).end()
       } else {

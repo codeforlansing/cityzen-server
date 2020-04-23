@@ -86,33 +86,6 @@ describe('Test that the basic routes return dummy data', () => {
     expect(user.doesClaimTask('uuid')).toBeTruthy()
   })
 
-  test('POST /users/id/tasks/unclaim', async () => {
-    const config = loadConfig()
-    const provider = new MemoryUserProvider()
-    config.users.provider.provider = provider
-
-    await supertest(await app(config))
-      .post('/users/example@example.com/tasks/unclaim')
-      .send({
-        tasks: ['uuid']
-      })
-      .expect(404)
-
-    const user = provider.addUser('example@example.com')
-    user.claimTasks(['uuid'])
-
-    expect(user.doesClaimTask('uuid')).toBeTruthy()
-
-    await supertest(await app(config))
-      .post('/users/example@example.com/tasks/unclaim')
-      .send({
-        tasks: ['uuid']
-      })
-      .expect(201)
-
-    expect(user.doesClaimTask('uuid')).toBeFalsy()
-  })
-
   test('GET /users/id/ missing user', async () => {
     const config = loadConfig()
     const provider = new MemoryUserProvider()

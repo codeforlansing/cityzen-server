@@ -17,12 +17,6 @@ class MemoryUser extends UserProvider.User {
     }
   }
 
-  unclaimTasks (taskIds) {
-    for (const taskId of taskIds) {
-      this.claimedTasks.delete(taskId)
-    }
-  }
-
   doesClaimTask (taskId) {
     return this.claimedTasks.has(taskId)
   }

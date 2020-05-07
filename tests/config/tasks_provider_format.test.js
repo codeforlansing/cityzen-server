@@ -1,9 +1,9 @@
-const format = require('../../src/config/tasks_backend_format')
-const TasksBackend = require('../../src/tasks_backend')
+const format = require('../../src/config/tasks_provider_format')
+const TaskProvider = require('../../src/tasks')
 
-describe('Test that tasks backend can be configured', () => {
+describe('Test that tasks provider can be configured', () => {
   test('has name', () => {
-    expect(format.name).toBe('tasks-backend')
+    expect(format.name).toBe('tasks-provider')
   })
 
   test('has values', () => {
@@ -14,11 +14,11 @@ describe('Test that tasks backend can be configured', () => {
 
   test('validate works', () => {
     // happy path
-    class FakeTasksBackend extends TasksBackend {}
-    expect(() => format.validate(new TasksBackend())).not.toThrow()
-    expect(() => format.validate(new FakeTasksBackend())).not.toThrow()
+    class FakeTaskProvider extends TaskProvider {}
+    expect(() => format.validate(new TaskProvider())).not.toThrow()
+    expect(() => format.validate(new FakeTaskProvider())).not.toThrow()
 
-    // rejects anything that's not a TasksBackend
+    // rejects anything that's not a TaskProvider
     expect(() => format.validate()).toThrow()
     expect(() => format.validate({})).toThrow()
     expect(() => format.validate([])).toThrow()
@@ -30,11 +30,11 @@ describe('Test that tasks backend can be configured', () => {
   test('coerce works', () => {
     // converts valid values
     for (const value of format.values) {
-      expect(format.coerce(value)).toBeInstanceOf(TasksBackend)
+      expect(format.coerce(value)).toBeInstanceOf(TaskProvider)
     }
 
     // rejects any other values
     expect(() => format.coerce('fake')).toThrow()
-    expect(() => format.coerce('TasksBackend')).toThrow()
+    expect(() => format.coerce('TaskProvider')).toThrow()
   })
 })

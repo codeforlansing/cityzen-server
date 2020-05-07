@@ -1,21 +1,21 @@
 const supertest = require('supertest')
 const app = require('../src/app')
 const { loadConfig } = require('../src/config')
-const MemoryTasksBackend = require('../src/memory_tasks_backend')
+const MemoryTaskProvider = require('../src/tasks/memory_provider')
 const MemoryUserProvider = require('../src/users/memory_provider')
 
 describe('Test that the basic routes return dummy data', () => {
   // Jest doesn't pass command line arguments through to tests:
   // https://github.com/facebook/jest/issues/5089
-  // For now, override the backend config manually.
+  // For now, override the provider config manually.
 
-  test('PUT /tasks/backend/', async () => {
-    const backend = new MemoryTasksBackend()
+  test('PUT /tasks/provider/', async () => {
+    const provider = new MemoryTaskProvider()
     const config = loadConfig()
-    config.tasks.backend.backend = backend
+    config.tasks.provider.provider = provider
 
     const { body } = await supertest(await app(config))
-      .put('/tasks/backend/')
+      .put('/tasks/provider/')
       .set('Accept', 'application/json')
       .set('Content-Type', 'application/json')
       .send([{
@@ -36,13 +36,13 @@ describe('Test that the basic routes return dummy data', () => {
   })
 
   test('GET /tasks/', async () => {
-    const backend = new MemoryTasksBackend()
+    const provider = new MemoryTaskProvider()
     const config = loadConfig()
-    config.tasks.backend.backend = backend
+    config.tasks.provider.provider = provider
 
     // TODO: this may cause problems in the future, because this will change what's in
     // the tasks list for subsequent tests
-    await backend.setTasks([{
+    await provider.setTasks([{
       taskId: 'taskid',
       name: 'Task Name',
       description: 'Task description',

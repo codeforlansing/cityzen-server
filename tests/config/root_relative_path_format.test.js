@@ -10,7 +10,7 @@ describe('Test that root-relative paths can be configured', () => {
     expect(() => format.validate('/')).not.toThrow()
     expect(() => format.validate('/tasks')).not.toThrow()
     expect(() => format.validate('/tasks/')).not.toThrow()
-    expect(() => format.validate('/tasks/backend')).not.toThrow()
+    expect(() => format.validate('/tasks/provider')).not.toThrow()
 
     // bad paths, not allowed
     expect(() => format.validate('https://www.google.com')).toThrow()

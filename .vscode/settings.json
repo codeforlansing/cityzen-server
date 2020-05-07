@@ -7,8 +7,11 @@
     },
     "javascript.implicitProjectConfig.checkJs": true,
     "cSpell.words": [
+        "Trello",
+        "Trello's",
         "taskid",
         "unclaim",
         "webhooks"
-    ]
+    ],
+    "nixEnvSelector.nixShellConfig": "${workspaceRoot}/shell.nix"
 }

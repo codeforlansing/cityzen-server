@@ -7,7 +7,7 @@ class User {
     * @param {string} id
     */
   constructor (id) {
-    /**
+    /** @public @readonly
      * The userId for this user. This should be unique between all users, and can be used to fetch this user form the UserProvider
      */
     this.id = id
@@ -19,7 +19,7 @@ class User {
   *
   *
   * @param {string[]} taskIds - The ids of the task which will be claimed by this user.
-   * @returns { PromiseLike<void> | void }
+  * @returns { PromiseLike<void> | void }
   * @abstract
   */
   claimTasks (taskIds) { throw new Error('unimplemented') }
@@ -33,24 +33,24 @@ class User {
  */
 class UserProvider {
   /**
-   * This function will be called inside ./src/config/tasks_backend_format.js
-   * to provide configuration for the backend
+   * This function will be called inside ./src/config/tasks_provider_format.js
+   * to provide configuration for the provider
    *
    * @returns { import("convict").Config<C> }
    */
   convictConfig () { return undefined }
 
   /**
-   * Initialize to the backend service.
+   * Initialize to the provider service.
    * This function may not need to do anything, but it can be used to setup one time authentication
    * or to setup webhooks.
    *
    * Note that this function is marked as async, which means that you may use async calls when
    * performing the authentication flow.
    *
-   * @param { C } config the backend configuration, as defined by convictConfig
+   * @param { C } config the provider configuration, as defined by convictConfig
    * @param { import("../config/index").Config } appConfig the application configuration. See config/index.js for full schema
-   * @returns { void | import("express").Router | PromiseLike<void | import("express").Router> } An express router which may be used to create backend specific endpoints for the api
+   * @returns { void | import("express").Router | PromiseLike<void | import("express").Router> } An express router which may be used to create provider specific endpoints for the api
    */
   init (config, appConfig) { }
 
@@ -63,13 +63,15 @@ class UserProvider {
   getUser (userId) { throw new Error('unimplemented') }
 }
 
+module.exports = UserProvider
+module.exports.User = User
 /**
- *
- * @param {UserProvider<User, any>} userProvider a user provider
- * @param { import("../config/index").Config["users"] } providerConfig the user provider configuration. See config/index.js for full schema
- * @param { import("../config/index").Config } config the application configuration. See config/index.js for full schema
- * @returns {Promise<express.Router>}
- */
+*
+* @param {UserProvider<User, any>} userProvider a user provider
+* @param { import("../config/index").Config["users"] } providerConfig the user provider configuration. See config/index.js for full schema
+* @param { import("../config/index").Config } config the application configuration. See config/index.js for full schema
+* @returns {Promise<express.Router>}
+*/
 async function mount (userProvider, providerConfig, config) {
   const router = express.Router()
   router.use(express.json())
@@ -130,4 +132,4 @@ async function mount (userProvider, providerConfig, config) {
   return router
 }
 
-module.exports = Object.assign(UserProvider, { mount, User })
+module.exports.mount = mount

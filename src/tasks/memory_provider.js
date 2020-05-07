@@ -1,21 +1,23 @@
-var express = require('express')
-const TasksBackend = require('./tasks_backend')
+const TaskProvider = require('.')
+const express = require('express')
 
 /**
  * An in-memory source of tasks that allows programmatically setting tasks
  * or using an internal HTTP route to upload tasks.
+ *
+ * @extends {TaskProvider<import('.').Task, {}>}
  */
-module.exports = class MemoryTasksBackend extends TasksBackend {
+class MemoryTaskProvider extends TaskProvider {
   constructor () {
     super()
 
-    /** @type {import("./tasks_backend").Task[]} */
+    /** @type {import('.').Task[]} */
     this.tasks = []
   }
 
   /**
-   * Initializes the in-memory backend service. An Express route is also
-   * configured to allow an HTTP PUT to the `tasks.backendPrefix` endpoint
+   * Initializes the in-memory provider service. An Express route is also
+   * configured to allow an HTTP PUT to the `tasks.providerPrefix` endpoint
    * to replace the in-memory tasks with a new value. The body of this
    * request will look like:
    *
@@ -57,12 +59,14 @@ module.exports = class MemoryTasksBackend extends TasksBackend {
   }
 
   /**
-   * A programmatic means of setting the in-memory tasks that this backend
+   * A programmatic means of setting the in-memory tasks that this provider
    * will produce when `getTasks()` is called.
    *
-   * @param {import("./tasks_backend").Task[]} tasks an array of tasks
+   * @param {import(".").Task[]} tasks an array of tasks
    */
   async setTasks (tasks) {
     this.tasks = tasks || []
   }
 }
+
+module.exports = MemoryTaskProvider

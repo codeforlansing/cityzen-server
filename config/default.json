@@ -1,8 +1,8 @@
 {
   "tasks": {
-    "backend": { 
-      "prefix": "/tasks/backend",
-      "backend": "none"
+    "provider": { 
+      "prefix": "/provider",
+      "provider": "none"
     }
   }
 }

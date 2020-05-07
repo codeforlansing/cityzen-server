@@ -1,13 +1,13 @@
 const superagent = require('superagent')
 const convict = require('convict')
-const TasksBackend = require('./tasks_backend')
-const ServerError = require('./server_error')
+const TaskProvider = require('.')
+const ServerError = require('../server_error')
 
 /**
- * Uses Trello as the source of tasks for the backend.
- * @extends {TasksBackend<{ apiBaseUrl: string; apiKey: string; apiToken: string; listId: string; }>}
+ * Uses Trello as the source of tasks for the provider.
+ * @extends {TaskProvider<{ apiBaseUrl: string; apiKey: string; apiToken: string; listId: string; }>}
  */
-class TrelloTasksBackend extends TasksBackend {
+class TrelloTaskProvider extends TaskProvider {
   convictConfig () {
     return convict({
       apiBaseUrl: {
@@ -21,7 +21,7 @@ class TrelloTasksBackend extends TasksBackend {
         doc: `
         The key used to access Trello's REST API. Sign-in to Trello and visit
         https://trello.com/app-key to generate a key.
-        Required if config.tasks.backend is 'trello'.
+        Required if config.tasks.provider is 'trello'.
       `,
         format: String,
         default: '',
@@ -32,7 +32,7 @@ class TrelloTasksBackend extends TasksBackend {
         The token used to access Trello's REST API. Sign-in to Trello and visit
         https://trello.com/app-key, then click the Token link after generating
         a key to generate a token.
-        Required if config.tasks.backend is 'trello'.
+        Required if config.tasks.provider is 'trello'.
       `,
         format: String,
         default: '',
@@ -42,7 +42,7 @@ class TrelloTasksBackend extends TasksBackend {
         doc: `
         Trello's internal identifier for the list where tasks should be
         retrieved. Use the board ID and the list name to look up the list ID.
-        Required if config.tasks.backend is 'trello'.
+        Required if config.tasks.provider is 'trello'.
       `,
         format: String,
         default: '',
@@ -52,9 +52,9 @@ class TrelloTasksBackend extends TasksBackend {
   }
 
   /**
-   * Initialize the backend service.
+   * Initialize the provider service.
    *
-   * @param { ReturnType<ReturnType<TrelloTasksBackend["convictConfig"]>["getProperties"]> } config the application configuration
+   * @param { ReturnType<ReturnType<TrelloTaskProvider["convictConfig"]>["getProperties"]> } config the application configuration
    */
   async init (config) {
     this.config = config
@@ -95,4 +95,4 @@ class TrelloTasksBackend extends TasksBackend {
   }
 }
 
-module.exports = TrelloTasksBackend
+module.exports = TrelloTaskProvider

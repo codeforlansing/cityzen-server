@@ -1,8 +1,8 @@
 
 const express = require('express')
 const helmet = require('helmet')
-const logError = require('./logging/log_error')
 const UserProvider = require('./users')
+const TaskProvider = require('./tasks')
 
 /**
  * Builds the application, returning an express app that can be launched or used for testing.
@@ -24,41 +24,13 @@ async function app (config) {
 
   // This mounts the UserProvider abstraction.
   // By mounting it, we create API endpoints for interacting with users, and also initialize the configured UserProvider
-  const volunteerProvider = config.users.provider.provider
-  app.use('/users/', await UserProvider.mount(volunteerProvider, config.users, config))
-
-  const tasksBackend = config.tasks.backend.backend
+  const userProvider = config.users.provider.provider
+  app.use('/users/', await UserProvider.mount(userProvider, config.users, config))
 
   // Add a route to handle the `GET /tasks` route.  This route responds with a
   // JSON array containing all the tasks that volunteers can work on.
-  app.get('/tasks/', async (req, res) => {
-    try {
-      const tasksJson = []
-      for await (const task of tasksBackend.getTasks()) {
-        tasksJson.push(task)
-      }
-      res.json(tasksJson)
-    } catch (error) {
-      logError(error)
-      res.status(503).json(error)
-    }
-  })
-
-  if (tasksBackend) {
-    const backendConfig = config.tasks.backend.backend.convictConfig()
-    if (backendConfig) {
-      backendConfig.load(config.tasks.backend.config)
-    }
-
-    const tasksRoute = await tasksBackend.init(
-      backendConfig && backendConfig.getProperties(),
-      config
-    )
-
-    if (tasksRoute) {
-      app.use(config.tasks.backend.prefix, tasksRoute)
-    }
-  }
+  const taskProvider = config.tasks.provider.provider
+  app.use('/tasks/', await TaskProvider.mount(taskProvider, config.tasks, config))
 
   return express().use(config.server.prefix, app)
 }

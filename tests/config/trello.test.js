@@ -7,8 +7,8 @@ describe("Test that Trello's config values load correctly", () => {
   test('Test loading config values', async () => {
     const config = loadConfig(CONFIG_PATH)
 
-    expect(config).toHaveProperty('tasks.backend.config.apiKey')
+    expect(config).toHaveProperty('tasks.provider.config.apiKey')
     // @ts-ignore
-    expect(config.tasks.backend.config.apiKey).toBe('123')
+    expect(config.tasks.provider.config.apiKey).toBe('123')
   })
 })

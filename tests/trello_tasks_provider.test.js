@@ -1,4 +1,4 @@
-const TrelloTasksBackend = require('../src/trello_tasks_backend')
+const TrelloTaskProvider = require('../src/tasks/trello_provider')
 const nock = require('nock')
 
 // @ts-ignore
@@ -6,7 +6,7 @@ const sampleTrelloCard = require('./samples/trello_card.json')
 
 describe('Test handling requests to and from Trello', () => {
   test('Successfully get and translate tasks from Trello', async () => {
-    const tasksBackend = new TrelloTasksBackend()
+    const TaskProvider = new TrelloTaskProvider()
     const apiBaseUrl = 'https://api.trello.com/1'
     const listId = '5'
     const apiKey = 'yeKipa'
@@ -18,10 +18,10 @@ describe('Test handling requests to and from Trello', () => {
       .reply(200, [sampleTrelloCard])
 
     try {
-      await tasksBackend.init(config)
+      await TaskProvider.init(config)
 
       const tasks = []
-      for await (const task of tasksBackend.getTasks()) {
+      for await (const task of TaskProvider.getTasks()) {
         tasks.push(task)
       }
 
@@ -38,7 +38,7 @@ describe('Test handling requests to and from Trello', () => {
   })
 
   test('Gracefully handles unexpected error from Trello', async () => {
-    const tasksBackend = new TrelloTasksBackend()
+    const TaskProvider = new TrelloTaskProvider()
     const apiBaseUrl = 'https://api.trello.com/1'
     const listId = '5'
     const apiKey = 'yeKipa'
@@ -50,8 +50,8 @@ describe('Test handling requests to and from Trello', () => {
       .reply(500)
 
     try {
-      await tasksBackend.init(config)
-      await expect(tasksBackend.getTasks().next()).rejects.toThrowError(
+      await TaskProvider.init(config)
+      await expect(TaskProvider.getTasks().next()).rejects.toThrowError(
         'Trello cannot be reached for an unknown reason.'
       )
     } finally {
@@ -60,7 +60,7 @@ describe('Test handling requests to and from Trello', () => {
   })
 
   test('Gracefully handles Not Found error from Trello', async () => {
-    const tasksBackend = new TrelloTasksBackend()
+    const TaskProvider = new TrelloTaskProvider()
     const apiBaseUrl = 'https://api.trello.com/1'
     const listId = '5'
     const apiKey = 'yeKipa'
@@ -72,8 +72,8 @@ describe('Test handling requests to and from Trello', () => {
       .reply(404)
 
     try {
-      await tasksBackend.init(config)
-      await expect(tasksBackend.getTasks().next()).rejects.toThrowError(
+      await TaskProvider.init(config)
+      await expect(TaskProvider.getTasks().next()).rejects.toThrowError(
         'Trello cannot be accessed. The server is likely misconfigured.'
       )
     } finally {

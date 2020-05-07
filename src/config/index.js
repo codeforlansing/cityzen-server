@@ -1,15 +1,15 @@
 require('dotenv').config()
 const convict = require('convict')
-const TasksBackend = require('../tasks_backend')
+const TaskProvider = require('../tasks')
 const UserProvider = require('../users')
 const path = require('path')
 
 const rootRelativePathFormat = require('./root_relative_path_format')
-const tasksBackendFormat = require('./tasks_backend_format')
+const TaskProviderFormat = require('./tasks_provider_format')
 const userProviderFormat = require('./user_provider_format')
 
 convict.addFormat(rootRelativePathFormat)
-convict.addFormat(tasksBackendFormat)
+convict.addFormat(TaskProviderFormat)
 convict.addFormat(userProviderFormat)
 
 function createConfig () {
@@ -54,7 +54,7 @@ function createConfig () {
         The prefix where additional endpoints for a user provider will be mounted.
         If userProvider.init() returns an express.Router(), then it will be
         mounted at /users/provider. This may be used for setting up
-        backend specific endpoints or Oauth callbacks, etc.
+        provider specific endpoints or Oauth callbacks, etc.
       `,
           format: 'root-relative-path',
           default: '/users/provider'
@@ -78,28 +78,28 @@ function createConfig () {
       }
     },
     tasks: {
-      backend: {
-        backend: {
+      provider: {
+        provider: {
           doc: `
-        The name of the task backend service to be used for the API.
-        Use one of: ${tasksBackendFormat.values.join(', ')}
+        The name of the task provider service to be used for the API.
+        Use one of: ${TaskProviderFormat.values.join(', ')}
       `,
-          format: 'tasks-backend',
-          default: new TasksBackend()
+          format: 'tasks-provider',
+          default: new TaskProvider()
         },
         prefix: {
           doc: `
-        The prefix where additional backend endpoints will be mounted.
-        If backend.init() returns an express.Router(), then it will be
-        mounted at /tasks/backend. This may be used for setting up
-        backend specific endpoints or Oauth callbacks, etc.
+        The prefix where additional provider endpoints will be mounted.
+        If provider.init() returns an express.Router(), then it will be
+        mounted at /tasks/provider. This may be used for setting up
+        provider specific endpoints or Oauth callbacks, etc.
       `,
           format: 'root-relative-path',
-          default: '/tasks/backend'
+          default: '/tasks/provider'
         },
         config: {
           doc: `
-        The configuration data specific to the TasksBackend. 
+        The configuration data specific to the TaskProvider. 
         For example, this may be used to configure API keys
       `,
           format: '*',

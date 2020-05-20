@@ -1,4 +1,4 @@
-const format = require('../../src/config/tasks_provider_format')
+const format = require('../../src/config/task_provider_format')
 const TaskProvider = require('../../src/tasks')
 
 describe('Test that tasks provider can be configured', () => {

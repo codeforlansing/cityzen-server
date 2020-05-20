@@ -7,6 +7,9 @@
     "lint": "eslint .",
     "test": "jest"
   },
+  "bin": {
+    "cityzen-server": "./index.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/codeforlansing/cityzen-server.git"

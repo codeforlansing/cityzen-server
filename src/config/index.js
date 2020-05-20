@@ -5,7 +5,7 @@ const UserProvider = require('../users')
 const path = require('path')
 
 const rootRelativePathFormat = require('./root_relative_path_format')
-const TaskProviderFormat = require('./tasks_provider_format')
+const TaskProviderFormat = require('./task_provider_format')
 const userProviderFormat = require('./user_provider_format')
 
 convict.addFormat(rootRelativePathFormat)

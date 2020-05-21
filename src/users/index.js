@@ -61,6 +61,14 @@ class UserProvider {
    * @returns {PromiseLike<U | undefined> | U | undefined }
    */
   getUser (userId) { throw new Error('unimplemented') }
+
+  /**
+   * Adds a new user to this user provider
+   *
+   * @param {string} userId The id of the user to add
+   * @returns {PromiseLike<U | undefined> | U | undefined }
+   */
+  addUser (userId) { throw new Error('unimplemented') }
 }
 
 module.exports = UserProvider
@@ -84,15 +92,15 @@ async function mount (userProvider, providerConfig, config) {
       const { id } = req.params
       const { tasks } = req.body
 
-      const user = await userProvider.getUser(id)
+      let user = await userProvider.getUser(id)
 
-      if (user) {
-        await user.claimTasks(tasks)
-        // Everything is OK.
-        res.status(201).end()
-      } else {
-        res.status(404).end()
+      if (!user) {
+        user = await userProvider.addUser(id)
       }
+
+      await user.claimTasks(tasks)
+      // Everything is OK.
+      res.status(201).end()
     } catch (error) {
       logError(error)
       res.status(500).json(error)

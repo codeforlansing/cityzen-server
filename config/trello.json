@@ -1,11 +1,12 @@
 {
+  "users": {
+    "provider": {
+      "provider": "memory"
+    }
+  },
   "tasks": {
     "provider": { 
-      "prefix": "/provider",
-      "provider": "trello",
-      "config": {
-        "apiKey": "123"
-      }
+      "provider": "trello"
     }
   }
 }

@@ -35,10 +35,6 @@ class MemoryVolunteerProvider extends UserProvider {
     this.users = new Map()
   }
 
-  /**
-   * Adds a new user to this user provider
-   * @param {string} userId The id of the user to add
-   */
   addUser (userId) {
     const user = new MemoryUser(userId)
     this.users.set(userId, user)

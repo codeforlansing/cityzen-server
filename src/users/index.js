@@ -23,6 +23,15 @@ class User {
   * @abstract
   */
   claimTasks (taskIds) { throw new Error('unimplemented') }
+
+  /**
+  * Retrive a listing of tasks the user is working on. This function will always return only task ids that this user has claimed.
+  * However, it may not return all the task the user is working on, although implementors should always try to do so if possible.
+  *
+  * @returns { AsyncGenerator<string> | Generator<string> | AsyncIterable<string> | Iterable<string> } all or some of the tasks the user is working on right now
+  * @abstract
+  */
+  * getTasks () { }
 }
 
 /**
@@ -121,6 +130,38 @@ async function mount (userProvider, providerConfig, config) {
       }
     } catch (error) {
       logError(error)
+      res.status(500).json(error)
+    }
+  })
+
+  router.post('/:id/report/', async (req, res) => {
+    try {
+      const { id } = req.params
+
+      const user = await userProvider.getUser(id)
+      if (user) {
+        const tasks = []
+        for await (const task of user.getTasks()) {
+          tasks.push(task)
+        }
+
+        const send = config.messages.provider.provider.send({
+          to: [id],
+          title: `report for user ${id}`,
+          message: JSON.stringify(tasks)
+        })
+
+        // iterate over all the replies from send to be
+        // sure that the function has completed
+        while (!(await send.next()).done) ;
+      }
+
+      res.status(201).end()
+
+    // TODO: allow pagination here
+    } catch (error) {
+      logError(error)
+      console.log(error)
       res.status(500).json(error)
     }
   })

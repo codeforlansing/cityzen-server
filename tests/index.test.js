@@ -3,6 +3,7 @@ const app = require('../src/app')
 const { loadConfig } = require('../src/config')
 const MemoryTaskProvider = require('../src/tasks/memory_provider')
 const MemoryUserProvider = require('../src/users/memory_provider')
+const MemoryMessageProvider = require('../src/messages/memory_provider')
 
 describe('Test that the basic routes return dummy data', () => {
   // Jest doesn't pass command line arguments through to tests:
@@ -40,8 +41,6 @@ describe('Test that the basic routes return dummy data', () => {
     const config = loadConfig()
     config.tasks.provider.provider = provider
 
-    // TODO: this may cause problems in the future, because this will change what's in
-    // the tasks list for subsequent tests
     await provider.setTasks([{
       taskId: 'taskid',
       name: 'Task Name',
@@ -96,5 +95,42 @@ describe('Test that the basic routes return dummy data', () => {
       .expect(404)
   })
 
-  test.todo('POST /user/report')
+  test('POST /user/report', async () => {
+    const config = loadConfig()
+
+    const taskProvider = new MemoryTaskProvider()
+    config.tasks.provider.provider = taskProvider
+    const task = {
+      taskId: 'taskid',
+      name: 'Task Name',
+      description: 'Task description',
+      status: 'todo'
+    }
+
+    await taskProvider.setTasks([task])
+
+    const userProvider = new MemoryUserProvider()
+    config.users.provider.provider = userProvider
+    await userProvider.addUser('example@example.com')
+    await supertest(await app(config))
+      .post('/users/example@example.com/tasks/claim')
+      .send({
+        tasks: ['taskid']
+      })
+      .expect(201)
+
+    const messageProvider = new MemoryMessageProvider()
+    config.messages.provider.provider = messageProvider
+
+    await supertest(await app(config))
+      .post('/users/example@example.com/report')
+      .expect(201)
+
+    expect(messageProvider.messages).toEqual({
+      'example@example.com': [{
+        title: 'report for user example@example.com',
+        message: JSON.stringify(['taskid'])
+      }]
+    })
+  })
 })

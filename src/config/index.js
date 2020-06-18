@@ -2,15 +2,18 @@ require('dotenv').config()
 const convict = require('convict')
 const TaskProvider = require('../tasks')
 const UserProvider = require('../users')
+const MessageProvider = require('../messages')
 const path = require('path')
 
 const rootRelativePathFormat = require('./root_relative_path_format')
-const TaskProviderFormat = require('./task_provider_format')
+const taskProviderFormat = require('./task_provider_format')
 const userProviderFormat = require('./user_provider_format')
+const messageProviderFormat = require('./message_provider_format.js')
 
 convict.addFormat(rootRelativePathFormat)
-convict.addFormat(TaskProviderFormat)
+convict.addFormat(taskProviderFormat)
 convict.addFormat(userProviderFormat)
+convict.addFormat(messageProviderFormat)
 
 function createConfig () {
   const config = convict({
@@ -82,7 +85,7 @@ function createConfig () {
         provider: {
           doc: `
         The name of the task provider service to be used for the API.
-        Use one of: ${TaskProviderFormat.values.join(', ')}
+        Use one of: ${taskProviderFormat.values.join(', ')}
       `,
           format: 'tasks-provider',
           default: new TaskProvider()
@@ -100,6 +103,36 @@ function createConfig () {
         config: {
           doc: `
         The configuration data specific to the TaskProvider. 
+        For example, this may be used to configure API keys
+      `,
+          format: '*',
+          default: {}
+        }
+      }
+    },
+    messages: {
+      provider: {
+        provider: {
+          doc: `
+        The name of the task provider service to be used for the API.
+        Use one of: ${messageProviderFormat.values.join(', ')}
+      `,
+          format: 'message-provider',
+          default: new MessageProvider()
+        },
+        prefix: {
+          doc: `
+        The prefix where additional provider endpoints will be mounted.
+        If provider.init() returns an express.Router(), then it will be
+        mounted at /messages/provider. This may be used for setting up
+        provider specific endpoints or Oauth callbacks, etc.
+      `,
+          format: 'root-relative-path',
+          default: '/messages/provider'
+        },
+        config: {
+          doc: `
+        The configuration data specific to the MessageProvider. 
         For example, this may be used to configure API keys
       `,
           format: '*',

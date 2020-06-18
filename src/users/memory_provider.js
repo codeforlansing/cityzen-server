@@ -20,6 +20,10 @@ class MemoryUser extends UserProvider.User {
   doesClaimTask (taskId) {
     return this.claimedTasks.has(taskId)
   }
+
+  getTasks () {
+    return this.claimedTasks
+  }
 }
 
 /**

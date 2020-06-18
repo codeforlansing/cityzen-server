@@ -3,6 +3,7 @@ const express = require('express')
 const helmet = require('helmet')
 const UserProvider = require('./users')
 const TaskProvider = require('./tasks')
+const MessageProvider = require('./messages')
 
 /**
  * Builds the application, returning an express app that can be launched or used for testing.
@@ -31,6 +32,10 @@ async function app (config) {
   // JSON array containing all the tasks that volunteers can work on.
   const taskProvider = config.tasks.provider.provider
   app.use('/tasks/', await TaskProvider.mount(taskProvider, config.tasks, config))
+
+  // Add a route to handle the `/messages` route
+  const messageProvider = config.messages.provider.provider
+  app.use('/message/', await MessageProvider.mount(messageProvider, config.messages, config))
 
   return express().use(config.server.prefix, app)
 }

@@ -1,8 +1,12 @@
 {
+  "users": {
+    "provider": {
+      "provider": "memory"
+    }
+  },
   "tasks": {
     "provider": { 
-      "prefix": "/provider",
-      "provider": "none"
+      "provider": "memory"
     }
   }
 }

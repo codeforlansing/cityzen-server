@@ -57,7 +57,7 @@ function createConfig () {
         provider specific endpoints or Oauth callbacks, etc.
       `,
           format: 'root-relative-path',
-          default: '/users/provider'
+          default: '/provider'
         },
         provider: {
           doc: `
@@ -95,7 +95,7 @@ function createConfig () {
         provider specific endpoints or Oauth callbacks, etc.
       `,
           format: 'root-relative-path',
-          default: '/tasks/provider'
+          default: '/provider'
         },
         config: {
           doc: `

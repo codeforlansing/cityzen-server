@@ -1,6 +1,6 @@
 {
-  "name": "cityzen-server",
-  "version": "1.0.0",
+  "name": "@codeforlansing/cityzen-server",
+  "version": "0.0.1-alpha.5",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",

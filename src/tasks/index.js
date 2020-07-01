@@ -81,21 +81,6 @@ class TaskProvider {
    * @returns { AsyncGenerator<T> | Generator<T> | AsyncIterable<T> | Iterable<T> }
    */
   getTasks () { return [] }
-
-  /**
-   * Retrieve a listing of tasks from the service.
-   *
-   * This function does not accept any parameters.
-   * If you want to configure its behaviour, you should configure the object that contains it instead.
-   *
-   * Note that this function is an async generator. This means that you may use asynchronous calls inside it.
-   * Additionally, because it is a generator function, you use a yield statement instead of a return statement.
-   * this is meant to accommodate APIs that paginate their results.
-   *
-   * TODO: do we want to allow passing queries, such as "tasks due within X days" here?
-   * @returns { AsyncGenerator<T> | Generator<T> | AsyncIterable<T> | Iterable<T> }
-   */
-  getTask () { return [] }
 }
 
 module.exports = TaskProvider

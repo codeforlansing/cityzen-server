@@ -145,6 +145,11 @@ function createConfig () {
   return config
 }
 
+function defaultConfigFileLocation (name) {
+  name = name || 'default.json'
+  return path.resolve(__dirname, '..', '..', 'config', name)
+}
+
 /**
  * @typedef { ReturnType<ReturnType<typeof createConfig>["getProperties"]> } Config A configuration object
  */
@@ -157,7 +162,7 @@ function createConfig () {
 function loadConfig (configFile) {
   const config = createConfig()
 
-  configFile = configFile || path.resolve(__dirname, '..', '..', 'config', config.get('config'))
+  configFile = configFile || defaultConfigFileLocation(config.get('config'))
   config.loadFile(configFile)
   config.validate({ allowed: 'strict' })
 
@@ -166,5 +171,6 @@ function loadConfig (configFile) {
 
 module.exports = {
   createConfig,
-  loadConfig
+  loadConfig,
+  defaultConfigFileLocation
 }

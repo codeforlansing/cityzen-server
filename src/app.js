@@ -35,7 +35,7 @@ async function app (config) {
 
   // Add a route to handle the `/messages` route
   const messageProvider = config.messages.provider.provider
-  app.use('/message/', await MessageProvider.mount(messageProvider, config.messages, config))
+  app.use('/messages/', await MessageProvider.mount(messageProvider, config.messages, config))
 
   return express().use(config.server.prefix, app)
 }

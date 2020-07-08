@@ -1,11 +1,11 @@
 const UserProvider = require('../users')
 
-const usersProvider = {
-  none: '../users',
-  memory: '../users/memory_provider'
+const UserProviders = {
+  none: () => require('../users'),
+  memory: () => require('../users/memory_provider')
 }
 
-const values = Object.keys(usersProvider)
+const values = Object.keys(UserProviders)
 
 module.exports = {
   name: 'user-provider',
@@ -32,7 +32,7 @@ module.exports = {
       )
     }
 
-    const UserProviderClass = require(usersProvider[val])
+    const UserProviderClass = UserProviders[val]()
     return new UserProviderClass()
   }
 }

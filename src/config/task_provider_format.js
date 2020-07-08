@@ -1,9 +1,9 @@
 const TaskProvider = require('../tasks')
 
 const TaskProviders = {
-  none: '../tasks',
-  memory: '../tasks/memory_provider',
-  trello: '../tasks/trello_provider'
+  none: require('../tasks'),
+  memory: require('../tasks/memory_provider'),
+  trello: require('../tasks/trello_provider')
 }
 
 const values = Object.keys(TaskProviders)
@@ -33,7 +33,7 @@ module.exports = {
       )
     }
 
-    const TaskProviderClass = require(TaskProviders[val])
+    const TaskProviderClass = TaskProviders[val]()
     if (!(TaskProviderClass.prototype instanceof TaskProvider) && TaskProviderClass !== TaskProvider) {
       throw new Error(`${JSON.stringify(TaskProviderClass, undefined, 2)} loaded from ${TaskProviders[val]} (${val}) is not a valid tasks constructor`)
     }

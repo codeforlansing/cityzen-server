@@ -1,7 +1,7 @@
 const MessageProvider = require('../messages')
 
 const MessageProviders = {
-  none: '../messages'
+  none: () => require('../messages')
 }
 
 const values = Object.keys(MessageProviders)
@@ -31,7 +31,7 @@ module.exports = {
       )
     }
 
-    const MessageProviderClass = require(MessageProviders[val])
+    const MessageProviderClass = MessageProviders[val]()
     if (!(MessageProviderClass.prototype instanceof MessageProvider) && MessageProviderClass !== MessageProvider) {
       throw new Error(`${JSON.stringify(MessageProviderClass, undefined, 2)} loaded from ${MessageProviders[val]} (${val}) is not a valid message provider constructor`)
     }

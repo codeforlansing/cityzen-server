@@ -54,4 +54,5 @@ class MemoryVolunteerProvider extends UserProvider {
   }
 }
 
-module.exports = Object.assign(MemoryVolunteerProvider, { User: MemoryUser })
+module.exports = MemoryVolunteerProvider
+module.exports.User = MemoryUser

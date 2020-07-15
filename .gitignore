@@ -104,3 +104,5 @@ public
 
 # Tern local files
 .tern-port
+
+dist

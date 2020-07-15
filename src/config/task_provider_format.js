@@ -1,9 +1,9 @@
 const TaskProvider = require('../tasks')
 
 const TaskProviders = {
-  none: require('../tasks'),
-  memory: require('../tasks/memory_provider'),
-  trello: require('../tasks/trello_provider')
+  none: () => require('../tasks'),
+  memory: () => require('../tasks/memory_provider'),
+  trello: () => require('../tasks/trello_provider')
 }
 
 const values = Object.keys(TaskProviders)

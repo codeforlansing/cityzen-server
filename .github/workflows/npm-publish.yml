@@ -75,6 +75,7 @@ jobs:
     strategy:
       matrix:
         os: [ windows-latest, ubuntu-latest, macos-latest ]
+        fail-fast: false
     needs: publish-release
     steps:
       - uses: actions/checkout@v2
@@ -82,7 +83,6 @@ jobs:
         with:
           node-version: 12.18.2
       - run: npm ci
-      - run: npm run package -- --build
       - name: package for unix
         run: |
           npm run package || npm run package -- --build

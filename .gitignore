@@ -105,4 +105,4 @@ public
 # Tern local files
 .tern-port
 
-dist
+cityzen-server*

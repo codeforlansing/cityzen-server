@@ -91,7 +91,7 @@ jobs:
       - name: package for windows
         run: |
           npm run package
-          zip cityzen-server.exe cityzen-server.zip
+          Compress-Archive cityzen-server.exe cityzen-server.zip
         if: ${{ matrix.os == 'windows-latest' }}
       - name: Upload Release Asset
         id: upload-release-asset

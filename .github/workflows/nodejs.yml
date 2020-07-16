@@ -4,9 +4,7 @@ on: [push]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-    
     steps:
     - uses: actions/checkout@v1
     - name: Use Node.js ${{ matrix.node-version }}
@@ -20,3 +18,27 @@ jobs:
         npm test
       env:
         CI: true
+  make-executables:
+    name: Make Executables for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ windows-latest ubuntu-latest macos-latest ]
+    needs: build
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: npm ci
+      - run: npm run package -- --build
+      - run: zip cityzen-server cityzen-server.zip
+        if: ${{ matrix.os == "ubuntu-latest" || matrix.os == "macos-latest" }}
+      - run: zip cityzen-server.exe cityzen-server.zip
+        if: ${{ matrix.os == "windows-latest" }}
+      - uses: actions/upload-artifact@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          name: ${{ matrix.os }} application
+          path: ${{ github.workspace }}/cityzen-server.zip

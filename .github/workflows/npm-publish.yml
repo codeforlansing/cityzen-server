@@ -85,7 +85,7 @@ jobs:
       - run: npm run package -- --build
       - name: package for unix
         run: |
-          npm run package
+          npm run package || npm run package -- --build
           zip cityzen-server cityzen-server.zip
         if: ${{ matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest' }}
       - name: package for windows

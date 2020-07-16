@@ -73,9 +73,9 @@ jobs:
     name: Publish Executables
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [ windows-latest, ubuntu-latest, macos-latest ]
-        fail-fast: false
     needs: publish-release
     steps:
       - uses: actions/checkout@v2

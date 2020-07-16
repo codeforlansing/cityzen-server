@@ -23,9 +23,9 @@ jobs:
     name: Make Executables
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [ windows-latest, ubuntu-latest, macos-latest ]
-        fail-fast: false
     needs: build
     steps:
       - uses: actions/checkout@v2
@@ -33,15 +33,15 @@ jobs:
         with:
           node-version: 12
       - run: npm ci
-      - run: npm run package
-      - name: package for linux
-        run: zip cityzen-server cityzen-server.zip
-        if: ${{ matrix.os == 'ubuntu-latest' }}
       - name: package for unix
-        run: zip cityzen-server cityzen-server.zip
-        if: ${{ matrix.os == 'macos-latest' }}
+        run: |
+          npm run package
+          zip cityzen-server.zip cityzen-server
+        if: ${{ matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest' }}
       - name: package for windows
-        run: Compress-Archive cityzen-server.exe cityzen-server.zip
+        run: |
+          npm run package
+          Compress-Archive cityzen-server.exe cityzen-server.zip
         if: ${{ matrix.os == 'windows-latest' }}
       - uses: actions/upload-artifact@v2
         env:

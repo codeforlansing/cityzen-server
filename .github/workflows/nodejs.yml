@@ -33,9 +33,9 @@ jobs:
       - run: npm ci
       - run: npm run package -- --build
       - run: zip cityzen-server cityzen-server.zip
-        if: ${{ matrix.os == "ubuntu-latest" || matrix.os == "macos-latest" }}
+        if: ${{ matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest' }}
       - run: zip cityzen-server.exe cityzen-server.zip
-        if: ${{ matrix.os == "windows-latest" }}
+        if: ${{ matrix.os == 'windows-latest' }}
       - uses: actions/upload-artifact@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

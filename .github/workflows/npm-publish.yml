@@ -81,16 +81,16 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 12.16.2
       - run: npm ci
       - name: package for unix
         run: |
-          npm run package -- --target 12
+          npm run package
           zip cityzen-server.zip cityzen-server
         if: ${{ matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest' }}
       - name: package for windows
         run: |
-          npm run package --target 12
+          npm run package
           Compress-Archive cityzen-server.exe cityzen-server.zip
         if: ${{ matrix.os == 'windows-latest' }}
       - name: Upload Release Asset

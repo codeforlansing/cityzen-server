@@ -35,12 +35,12 @@ jobs:
       - run: npm ci
       - name: package for unix
         run: |
-          npm run package
+          npm run package -- --target 12
           zip cityzen-server.zip cityzen-server
         if: ${{ matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest' }}
       - name: package for windows
         run: |
-          npm run package
+          npm run package -- --target 12
           Compress-Archive cityzen-server.exe cityzen-server.zip
         if: ${{ matrix.os == 'windows-latest' }}
       - uses: actions/upload-artifact@v2

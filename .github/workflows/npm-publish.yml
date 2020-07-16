@@ -17,10 +17,13 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 12
-      - run: |
-        npm ci
-        npm run lint
-        npm test
+      - name: npm install lint and test
+        run: |
+          npm ci
+          npm run lint
+          npm test
+        env:
+          CI: true
 
   publish-release:
     runs-on: ubuntu-latest

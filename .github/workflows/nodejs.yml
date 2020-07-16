@@ -18,8 +18,9 @@ jobs:
         npm test
       env:
         CI: true
+
   make-executables:
-    name: Make Executables for ${{ matrix.os }}
+    name: Make Executables
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:

@@ -83,9 +83,15 @@ jobs:
           node-version: 12
       - run: npm ci
       - run: npm run package -- --build
-      - run: zip cityzen-server cityzen-server.zip
+      - name: package for unix
+        run: |
+          npm run package -- --build
+          zip cityzen-server cityzen-server.zip
         if: ${{ matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest' }}
-      - run: zip cityzen-server.exe cityzen-server.zip
+      - name: package for windows
+        run: |
+          npm run package
+          zip cityzen-server.exe cityzen-server.zip
         if: ${{ matrix.os == 'windows-latest' }}
       - name: Upload Release Asset
         id: upload-release-asset

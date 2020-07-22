@@ -24,9 +24,9 @@ function createConfig () {
     },
     config: {
       doc: `
-    The name of a config file in the 'config' directory.
-    e.g. 'default.json'
-  `,
+        The name of a config file in the 'config' directory.
+        e.g. 'default.json'
+      `,
       format: String,
       default: 'default.json',
       arg: 'config'
@@ -34,18 +34,18 @@ function createConfig () {
     server: {
       port: {
         doc: `
-      The port to be used when the server starts running.
-    `,
+          The port to be used when the server starts running.
+        `,
         format: 'port',
         default: 3000,
         env: 'PORT'
       },
       prefix: {
         doc: `
-      The API path used to get tasks, so for example if you wanted
-      to get a listing of all the tasks the application knows about,
-      it would be at /tasks.
-    `,
+          The API path used to get tasks, so for example if you wanted
+          to get a listing of all the tasks the application knows about,
+          it would be at /tasks.
+        `,
         format: 'root-relative-path',
         default: '/'
       }
@@ -54,27 +54,27 @@ function createConfig () {
       provider: {
         prefix: {
           doc: `
-        The prefix where additional endpoints for a user provider will be mounted.
-        If userProvider.init() returns an express.Router(), then it will be
-        mounted at /users/provider. This may be used for setting up
-        provider specific endpoints or Oauth callbacks, etc.
-      `,
+            The prefix where additional endpoints for a user provider will be mounted.
+            If userProvider.init() returns an express.Router(), then it will be
+            mounted at /users/provider. This may be used for setting up
+            provider specific endpoints or Oauth callbacks, etc.
+          `,
           format: 'root-relative-path',
           default: '/provider'
         },
         provider: {
           doc: `
-          The name of the user provider to be used for this service. 
-          Use one of: ${userProviderFormat.values.join(', ')}
+            The name of the user provider to be used for this service. 
+            Use one of: ${userProviderFormat.values.join(', ')}
           `,
           format: 'user-provider',
           default: new UserProvider()
         },
         config: {
           doc: `
-        The configuration data specific to the userProvider. 
-        For example, this may be used to configure API keys
-      `,
+            The configuration data specific to the userProvider. 
+            For example, this may be used to configure API keys
+          `,
           format: '*',
           default: {}
         }
@@ -84,27 +84,27 @@ function createConfig () {
       provider: {
         provider: {
           doc: `
-        The name of the task provider service to be used for the API.
-        Use one of: ${taskProviderFormat.values.join(', ')}
-      `,
+            The name of the task provider service to be used for the API.
+            Use one of: ${taskProviderFormat.values.join(', ')}
+          `,
           format: 'tasks-provider',
           default: new TaskProvider()
         },
         prefix: {
           doc: `
-        The prefix where additional provider endpoints will be mounted.
-        If provider.init() returns an express.Router(), then it will be
-        mounted at /tasks/provider. This may be used for setting up
-        provider specific endpoints or Oauth callbacks, etc.
-      `,
+            The prefix where additional provider endpoints will be mounted.
+            If provider.init() returns an express.Router(), then it will be
+            mounted at /tasks/provider. This may be used for setting up
+            provider specific endpoints or Oauth callbacks, etc.
+          `,
           format: 'root-relative-path',
           default: '/provider'
         },
         config: {
           doc: `
-        The configuration data specific to the TaskProvider. 
-        For example, this may be used to configure API keys
-      `,
+            The configuration data specific to the TaskProvider. 
+            For example, this may be used to configure API keys
+          `,
           format: '*',
           default: {}
         }
@@ -114,27 +114,27 @@ function createConfig () {
       provider: {
         provider: {
           doc: `
-        The name of the task provider service to be used for the API.
-        Use one of: ${messageProviderFormat.values.join(', ')}
-      `,
+            The name of the task provider service to be used for the API.
+            Use one of: ${messageProviderFormat.values.join(', ')}
+          `,
           format: 'message-provider',
           default: new MessageProvider()
         },
         prefix: {
           doc: `
-        The prefix where additional provider endpoints will be mounted.
-        If provider.init() returns an express.Router(), then it will be
-        mounted at /messages/provider. This may be used for setting up
-        provider specific endpoints or Oauth callbacks, etc.
-      `,
+            The prefix where additional provider endpoints will be mounted.
+            If provider.init() returns an express.Router(), then it will be
+            mounted at /messages/provider. This may be used for setting up
+            provider specific endpoints or Oauth callbacks, etc.
+          `,
           format: 'root-relative-path',
           default: '/messages/provider'
         },
         config: {
           doc: `
-        The configuration data specific to the MessageProvider. 
-        For example, this may be used to configure API keys
-      `,
+            The configuration data specific to the MessageProvider. 
+            For example, this may be used to configure API keys
+          `,
           format: '*',
           default: {}
         }

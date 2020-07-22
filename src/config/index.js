@@ -6,11 +6,13 @@ const MessageProvider = require('../messages')
 const path = require('path')
 
 const rootRelativePathFormat = require('./root_relative_path_format')
+const stringListFormat = require('./string_list_format')
 const taskProviderFormat = require('./task_provider_format')
 const userProviderFormat = require('./user_provider_format')
 const messageProviderFormat = require('./message_provider_format.js')
 
 convict.addFormat(rootRelativePathFormat)
+convict.addFormat(stringListFormat)
 convict.addFormat(taskProviderFormat)
 convict.addFormat(userProviderFormat)
 convict.addFormat(messageProviderFormat)
@@ -48,6 +50,16 @@ function createConfig () {
         `,
         format: 'root-relative-path',
         default: '/'
+      },
+      corsAllowedOrigins: {
+        doc: `
+          A list of values the server will provide in Access-Control-Allow-Origin
+          headers. This allows the client to be hosted on a different domain
+          from the API while still allowing communication between the two.
+        `,
+        format: 'string-list',
+        default: [],
+        env: 'CORS_ALLOWED_ORIGINS'
       }
     },
     users: {

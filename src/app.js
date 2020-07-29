@@ -20,6 +20,18 @@ async function app (config) {
   // practices
   app.use(helmet())
 
+  // Add CORS headers to allow server and client to communicate
+  app.use(function (req, res, next) {
+    config.server.corsAllowedOrigins.forEach(allowedOrigin => {
+      res.header('Access-Control-Allow-Origin', allowedOrigin)
+    })
+    res.header(
+      'Access-Control-Allow-Headers',
+      'Origin, X-Requested-With, Content-Type, Accept'
+    )
+    next()
+  })
+
   // Setup the routes (otherwise known as API endpoints, REST URLS, etc) for
   // our server.
 

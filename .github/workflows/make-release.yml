@@ -14,10 +14,9 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 12
-        run: |
-          npm ci
-          npm run lint
-          npm test
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test
   release:
     needs: build
     name: Upload Release Asset

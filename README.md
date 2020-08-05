@@ -14,23 +14,31 @@ Staff can setup a project and tasks in Trello. They can drag or drop the project
 
 The CityZen client is built using Vue.js. The server backend is Node.js with a SQL Lite database.
 
-**Tip:** CityZen requires a fairly recent version of both npm and Node.js. To install both go here: [Get NPM](https://www.npmjs.com/get-npm)   For reference when these docs were written we were using version 12.18.1 of Node.js and version 6.14.5 of npm.
+> **Tip:** CityZen requires a fairly recent version of both npm and Node.js. To install both go here: [Get NPM](https://www.npmjs.com/get-npm)   For reference when these docs were written we were using version 12.18.1 of Node.js and version 6.14.5 of npm.
 
 To install CityZen first create the directory CityZen-Server. From the command prompt:
 
-**md CityZen-Server**
+``` sh
+md CityZen-Server
+```
 
 Navigate to the directory CityZen-Server and then at the command prompt type:
 
-**npm init**
+``` sh
+npm init
+```
 
 Then you have to answer a series of questions about the project. Next to install the server you want type on the command line:
 
-**npm i @codeforlansing/cityzen-server**
+``` sh
+npm i @codeforlansing/cityzen-server
+```
 
 Or alternately you can install using npx:
 
-**npx @codeforlansing/cityzen-server**
+``` sh
+npx @codeforlansing/cityzen-server
+```
 
 ### Setting up Trello
 
@@ -40,7 +48,7 @@ Now we're ready to create 'cards' which in Trello which will represent your proj
 
 By grabbing the titles of the cards you can drag them around to change their order. So if you have a new project and want it to be first on your web page drag it to first in Trello and it will be reflected on your website. If you're interested in video tutorials for advanced Trello topics you can find them [here.](https://blog.trello.com/press-play-the-trello-tutorial-video-series-is-here)
 
-### Questions
+## Questions
 
 Complete documentation for the CityZen Project: [https://github.com/codeforlansing/cityzen-docs](https://github.com/codeforlansing/cityzen-docs)
 
@@ -48,15 +56,15 @@ For general support, direct your questions to the code4lansing channel in the [L
 
 Stay in touch
 
-*   [Slack](https://lansingcodes-slackin.herokuapp.com/) (join the code4lansing channel)
+*   [Slack](https://lansingcodes-slackin.herokuapp.com/) (join the `#code4lansing` channel)
 *   [Facebook](https://www.facebook.com/code4lansing/)
 *   [Website](https://codeforlansing.org/)
 
-### Contribution
+## Contribution
 
 You are welcome and encouraged to make changes to this website by submitting pull requests or forking our code to make your own community website! Before you get ahead of yourself, though, please read our [Contributing Guide.](https://github.com/codeforlansing/cityzen-server/blob/master/.github/CONTRIBUTING.md)
 
-### License
+## License
 
 [MIT](https://opensource.org/licenses/MIT)
 

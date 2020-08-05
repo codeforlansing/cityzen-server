@@ -1,4 +1,4 @@
-<div>
+![Build](https://github.com/codeforlansing/cityzen-server/workflows/Build/badge.svg)
 
 ## CityZen Server
 
@@ -61,5 +61,3 @@ You are welcome and encouraged to make changes to this website by submitting pul
 [MIT](https://opensource.org/licenses/MIT)
 
 Copyright (c) 2019-present, Code for Lansing
-
-</div>

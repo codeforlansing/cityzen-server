@@ -1,6 +1,6 @@
-![build](https://github.com/codeforlansing/cityzen-server/workflows/Build/badge.svg)
-![version](https://img.shields.io/npm/v/@codeforlansing/cityzen-server.svg?sanitize=true)
-![license](https://img.shields.io/npm/l/@codeforlansing/cityzen-server.svg?sanitize=true)
+[![build](https://github.com/codeforlansing/cityzen-server/workflows/build/badge.svg)](https://github.com/codeforlansing/cityzen-server/actions?query=workflow%3Abuild)
+[![version](https://img.shields.io/npm/v/@codeforlansing/cityzen-server.svg?sanitize=true)](https://www.npmjs.com/package/@codeforlansing/cityzen-server)
+[![license](https://img.shields.io/npm/l/@codeforlansing/cityzen-server.svg?sanitize=true)](https://github.com/codeforlansing/cityzen-server/blob/master/LICENSE)
 
 ## CityZen Server
 

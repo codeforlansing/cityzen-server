@@ -1,4 +1,6 @@
-![Build](https://github.com/codeforlansing/cityzen-server/workflows/Build/badge.svg)
+![build](https://github.com/codeforlansing/cityzen-server/workflows/Build/badge.svg)
+![version](https://img.shields.io/npm/v/@codeforlansing/cityzen-server.svg?sanitize=true)
+![license](https://img.shields.io/npm/l/@codeforlansing/cityzen-server.svg?sanitize=true)
 
 ## CityZen Server
 

@@ -48,7 +48,7 @@ Here's how to create an account on Trello and create your first project. Sign up
 
 Now we're ready to create 'cards' which in Trello which will represent your projects. In each project you can list individual tasks. Trello calls the card titles lists. So creating a list is naming a card. Then you're asked to add a card which is what Trello calls adding a task.
 
-By grabbing the titles of the cards you can drag them around to change their order. So if you have a new project and want it to be first on your web page drag it to first in Trello and it will be reflected on your website. If you're interested in video tutorials for advanced Trello topics you can find them [here.](https://blog.trello.com/press-play-the-trello-tutorial-video-series-is-here)
+By grabbing the titles of the cards you can drag them around to change their order. So if you have a new project and want it to be first on your web page drag it to first in Trello and it will be reflected on your website.  If you're interested in video tutorials for advanced Trello topics you can find them [here.](https://blog.trello.com/press-play-the-trello-tutorial-video-series-is-here)
 
 ## Questions
 

@@ -77,7 +77,6 @@ jobs:
       fail-fast: false
       matrix:
         os: [ windows-latest, ubuntu-latest, macos-latest ]
-    needs: publish-release
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
